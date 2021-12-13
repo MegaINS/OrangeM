@@ -1,0 +1,18 @@
+# Project exclude paths
+/project/target/
+
+/target/
+
+.idea/
+
+bin/
+
+logs/
+
+client/target/
+
+common/target/
+
+mge/target/
+
+doc/
