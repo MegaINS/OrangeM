@@ -5,18 +5,18 @@ import org.lwjgl.opengl.GL11._
 import ru.megains.mge.render.camera.Camera
 import ru.megains.mge.render.mesh.MeshMaker
 import ru.megains.mge.render.model.Model
+import ru.megains.mge.render.shader.Shader
 import ru.megains.mge.render.texture.Texture
 import ru.megains.orangem.client.render.block.RenderBlock
-import ru.megains.orangem.client.render.shader.SkyBoxShader
+import ru.megains.orangem.client.render.shader.{ShaderManager, SkyBoxShader}
 
 class SkyBoxRenderer {
 
-    var skyBoxShader = new SkyBoxShader()
+    var skyBoxShader: Shader = ShaderManager.skyBoxShader
     var skybox:Model = _
     val skyboxTexture = new Texture("textures/skybox/Daylight Box UV_0.png")
 
     def init(): Unit ={
-        skyBoxShader.create()
         val minX = -3
         val maxX = 3
         val minY = -3
@@ -118,7 +118,7 @@ class SkyBoxRenderer {
     }
 
     def render(worldCamera:Camera): Unit ={
-        skyBoxShader.bind()
+        ShaderManager.bindShader(skyBoxShader)
         skyBoxShader.setUniform(worldCamera)
         glEnable(GL_CULL_FACE)
        // glEnable(GL_STENCIL_TEST)
@@ -130,9 +130,13 @@ class SkyBoxRenderer {
         skybox.render(skyBoxShader)
 
 
-        skyBoxShader.unbind()
+        ShaderManager.unbindShader()
 
 
 
+    }
+
+    def cleanUp(): Unit ={
+        skybox.cleanUp()
     }
 }

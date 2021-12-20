@@ -8,7 +8,7 @@ class Texture private(val textureData: TextureData) extends TTexture(textureData
 
 
     def this(name: String) = {
-        this(new TextureData(File.ioResourceToByteBuffer(name, 8 * 1024)))
+        this(new TextureData(name,File.ioResourceToByteBuffer(name, 8 * 1024)))
 
         glBindTexture(GL_TEXTURE_2D, getGlTextureId)
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1)

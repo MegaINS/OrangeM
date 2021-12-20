@@ -4,7 +4,6 @@ import java.awt.Color
 import ru.megains.mge.Window
 import ru.megains.mge.render.shader.Shader
 import ru.megains.mge.render.text.Label
-import ru.megains.orangem.client.Options
 import ru.megains.orangem.client.render.ChunkRenderer
 import ru.megains.orangem.client.render.gui.base.{Gui, GuiUI}
 import ru.megains.orangem.common.entity.player.EntityPlayer
@@ -70,10 +69,10 @@ class GuiDebugInfo() extends GuiUI {
         }
 
 
-        renderRangeH = new Label("renderRangeH: " + Options.renderRange(0)) {
+        renderRangeH = new Label("renderRangeH: " + gameScene.settings.RENDER_DISTANCE_WIDTH) {
             posY = 160
         }
-        renderRangeV = new Label("renderRangeV: " + Options.renderRange(1)) {
+        renderRangeV = new Label("renderRangeV: " + gameScene.settings.RENDER_DISTANCE_HEIGHT) {
             posY = 180
         }
 

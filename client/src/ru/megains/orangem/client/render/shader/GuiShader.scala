@@ -3,7 +3,7 @@ package ru.megains.orangem.client.render.shader
 import ru.megains.mge.render.camera.Camera
 import ru.megains.mge.render.shader.Shader
 
-class GuiShader extends Shader {
+private class GuiShader extends Shader {
 
     override val dir: String = "shaders/2d"
 

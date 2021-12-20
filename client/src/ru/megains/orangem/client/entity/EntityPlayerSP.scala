@@ -1,11 +1,11 @@
 package ru.megains.orangem.client.entity
 
-import ru.megains.orangem.client.OrangeMClient
+import ru.megains.orangem.client.OrangeM
 import ru.megains.orangem.client.network.handler.NetHandlerPlayClient
 import ru.megains.orangem.common.entity.player.EntityPlayer
 import ru.megains.orangem.common.world.World
 
-class EntityPlayerSP(orangeM: OrangeMClient, world: World, val connection: NetHandlerPlayClient) extends EntityPlayer(" ") {
+class EntityPlayerSP(orangeM: OrangeM, world: World, val connection: NetHandlerPlayClient) extends EntityPlayer(" ") {
 
 
     private var lastReportedPosX: Double = .0
@@ -34,7 +34,7 @@ class EntityPlayerSP(orangeM: OrangeMClient, world: World, val connection: NetHa
 //
 //    }
 
-    override def update() {
+    override def update(): Unit = {
 
         super.update()
         onUpdateWalkingPlayer()
@@ -42,7 +42,7 @@ class EntityPlayerSP(orangeM: OrangeMClient, world: World, val connection: NetHa
     }
 
 
-    def onUpdateWalkingPlayer() {
+    def onUpdateWalkingPlayer(): Unit = {
 //
 //        if (isCurrentViewEntity) {
 //            val axisalignedbb: AABB = body

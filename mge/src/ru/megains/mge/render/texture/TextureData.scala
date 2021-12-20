@@ -14,7 +14,7 @@ class TextureData() {
 
     var image:ByteBuffer = _
 
-    def this(imageBuffer: ByteBuffer) ={
+    def this(name:String,imageBuffer: ByteBuffer) ={
         this()
         try {
             val stack = stackPush
@@ -28,6 +28,7 @@ class TextureData() {
                     throw new RuntimeException("Failed to read image information: " + stbi_failure_reason)
                 }
                 else System.out.println("OK with reason: " + stbi_failure_reason)
+                System.out.println("Image imagePath: " + name)
                 System.out.println("Image width: " + w.get(0))
                 System.out.println("Image height: " + h.get(0))
                 System.out.println("Image components: " + comp.get(0))

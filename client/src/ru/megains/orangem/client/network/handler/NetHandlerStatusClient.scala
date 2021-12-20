@@ -1,6 +1,6 @@
 package ru.megains.orangem.client.network.handler
 
-import ru.megains.orangem.client.OrangeMClient
+import ru.megains.orangem.client.OrangeM
 import ru.megains.orangem.client.network.ServerData
 import ru.megains.orangem.common.network.NetworkManager
 import ru.megains.orangem.common.network.handler.INetHandlerStatusClient
@@ -19,7 +19,7 @@ class NetHandlerStatusClient(server:ServerData,networkManager: NetworkManager) e
         else {
             receivedStatus = true
 
-            this.pingSentAt = OrangeMClient.getSystemTime
+            this.pingSentAt = OrangeM.getSystemTime
             networkManager.sendPacket(new CPacketPing(pingSentAt))
             this.successful = true
         }
@@ -27,7 +27,7 @@ class NetHandlerStatusClient(server:ServerData,networkManager: NetworkManager) e
 
     override def handlePong(packetIn: SPacketPong) :Unit ={
         val i: Long = pingSentAt
-        val j: Long = OrangeMClient.getSystemTime
+        val j: Long = OrangeM.getSystemTime
         server.pingToServer = j - i
         networkManager.closeChannel("ServerPinger" + "handlePong")
     }

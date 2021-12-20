@@ -6,10 +6,10 @@ object StartClient extends App {
 
   val config = new Configuration() {
     filePath = System.getProperty("user.dir").replaceAll("\\\\", "/") + "/client/resources/"
-    println(filePath.toString)
+    println(filePath)
   }
   File.gamePath = config.filePath
-  val game = new OrangeMClient(config)
+  val game = new OrangeM(config)
   game.start()
 
 }

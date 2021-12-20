@@ -4,22 +4,20 @@ import java.awt.Color
 import ru.megains.mge.render.MContainer
 import ru.megains.mge.render.mesh.MeshMaker
 import ru.megains.mge.render.model.Model
-import ru.megains.orangem.client.scene.GameScene
+import ru.megains.orangem.client.OrangeM
+import ru.megains.orangem.client.scene.SceneGame
 
-private[base] abstract class Gui extends MContainer {
+abstract class Gui extends MContainer {
 
 
 
-    var gameScene: GameScene = _
-
-    def init(gameSceneIn: GameScene): Unit ={
-        gameScene = gameSceneIn
+    def init(gameIn: OrangeM): Unit ={
+        removeAllChildren()
         init()
     }
 
     def init(): Unit
 
-    def resize(width:Int,height:Int):Unit
 
 }
 

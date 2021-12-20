@@ -1,14 +1,15 @@
 package ru.megains.orangem.client.network.handler
 
 import ru.megains.mge.Scene
-import ru.megains.orangem.client.OrangeMClient
+import ru.megains.mge.render.MContainer
+import ru.megains.orangem.client.OrangeM
 import ru.megains.orangem.client.utils.Logger
 import ru.megains.orangem.common.network.NetworkManager
 import ru.megains.orangem.common.network.handler.{INetHandler, INetHandlerPlayClient}
 import ru.megains.orangem.common.network.packet.Packet
 import ru.megains.orangem.common.network.packet.play.server.{SPacketBlockChange, SPacketChangeGameState, SPacketChunkData, SPacketHeldItemChange, SPacketJoinGame, SPacketMultiBlockChange, SPacketPlayerListItem, SPacketPlayerPosLook, SPacketSetSlot, SPacketWindowItems}
 
-class NetHandlerPlayClient(gameController: OrangeMClient, previousScene: Scene, val netManager: NetworkManager) extends INetHandlerPlayClient with Logger[NetHandlerPlayClient] {
+class NetHandlerPlayClient(gameController: OrangeM, previousScene: MContainer, val netManager: NetworkManager) extends INetHandlerPlayClient with Logger[NetHandlerPlayClient] {
 
 
   //  var clientWorldController: WorldClient = _
@@ -23,7 +24,7 @@ class NetHandlerPlayClient(gameController: OrangeMClient, previousScene: Scene, 
 
     }
 
-    override def sendPacket(packetIn: Packet[_ <: INetHandler]) {
+    override def sendPacket(packetIn: Packet[_ <: INetHandler]): Unit = {
         netManager.sendPacket(packetIn)
     }
 

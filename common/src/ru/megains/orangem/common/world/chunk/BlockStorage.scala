@@ -10,7 +10,7 @@ import scala.collection.mutable
 class BlockStorage(pos: ChunkPosition) extends Logger[BlockStorage] {
 
 
-    val blockId = new Array[Short](Chunk.blockSize *  Chunk.blockSize*Chunk.blockSize)
+    lazy val blockId = new Array[Short](Chunk.blockSize *  Chunk.blockSize*Chunk.blockSize)
     val cellId = new mutable.HashMap[Int, BlockState]()
     val AIR: Short = GameRegister.getIdByBlock(BlockAir).toShort
     val CELL: Short = -1

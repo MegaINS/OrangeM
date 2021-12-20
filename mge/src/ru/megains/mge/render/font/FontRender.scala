@@ -2,12 +2,14 @@ package ru.megains.mge
 package render.font
 
 import org.lwjgl.opengl.GL11.{GL_QUADS, glBegin, glEnd, glTexCoord2f, glVertex2f}
+import org.lwjgl.stb.STBTruetype.{stbtt_GetCodepointHMetrics, stbtt_ScaleForPixelHeight}
 
 import java.awt.Color
 import org.lwjgl.stb.{STBTTAlignedQuad, STBTruetype}
 import org.lwjgl.system.MemoryStack
 import ru.megains.mge.render.mesh.{Mesh, MeshMaker}
 import ru.megains.mge.render.texture.TextureManager
+import org.lwjgl.BufferUtils
 
 import scala.collection.mutable
 
@@ -29,7 +31,7 @@ object FontRender {
         mm.setTexture(font)
         mm.addColor(color)
         val size = 16
-        font.cdata.position(0* 1500)
+        font.cdata.position(2* 1500)
         for (i <- text.indices) {
             val c: Char = text.charAt(i)
             if (c == '\n') {
@@ -49,6 +51,13 @@ object FontRender {
         if (stack != null) stack.close()
         mm.make()
     }
+
+
+
+
+
+
+
     def loadFont(name: String): Font = {
         if (fontsMap.contains(name)) fontsMap(name)
         else {

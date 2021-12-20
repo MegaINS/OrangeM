@@ -5,17 +5,17 @@ import ru.megains.mge.render.texture.TextureRegion
 import ru.megains.mge.render.{MContainer, MSprite}
 import ru.megains.orangem.client.render.Resources
 
-class MSlider(val sliderText: String, weidth: Int, height: Int,min:Int,max:Int,var value:Int) extends MContainer {
+class MSlider(val sliderText: String, widthIn: Int, height: Int, min: Int, max: Int, var value: Int,func:()=>Unit) extends MContainer {
 
 
-    val label: Label = new Label(sliderText) {
-        posX = weidth / 2 - 35
+    val label: Label = new Label(sliderText + ":  " + value) {
+        posX = (widthIn -  width)/2
         posY = 10
     }
     val buttonUp: MSprite = new MSprite(new TextureRegion(Resources.WIDGETS, 0, 66, 200, 20), 20, height) {
-        posX = 2
+        posX = 2 + (widthIn - 24) * value / max
     }
-    val buttonDisable: MSprite = new MSprite(new TextureRegion(Resources.WIDGETS, 0, 46, 200, 20), weidth, height)
+    val buttonDisable: MSprite = new MSprite(new TextureRegion(Resources.WIDGETS, 0, 46, 200, 20), widthIn, height)
 
     addChildren(buttonDisable, buttonUp, label)
 
@@ -24,27 +24,30 @@ class MSlider(val sliderText: String, weidth: Int, height: Int,min:Int,max:Int,v
 
 
     override def update(): Unit = {
-        label.text = sliderText + ":  " + value
-        buttonUp.posX = 2 + (weidth - 24) * value / max
+
     }
 
-    override def mousePress(x: Int, y: Int): Unit = {
-        if(isMouseOver(x,y)){
+    override def mousePress(x: Int, y: Int,button:Int): Unit = {
+        if (isMouseOver(x, y)) {
             isDrag = !isDrag
         }
     }
 
     override def mouseMove(x: Int, y: Int): Unit = {
-        if(isDrag){
-          value = Math.min( Math.max(((x - posX-12)/(weidth.toFloat-24) * max ).toInt,min),max)
+        if (isDrag) {
+            value = Math.min(Math.max(((x - posX - 12) / (widthIn.toFloat - 24) * max).toInt, min), max)
+            label.text = sliderText + ":  " + value
+            label.posX = (widthIn -  label.width)/2
+            buttonUp.posX = 2 + ((widthIn - 24)/ (max- min).toFloat) * (value - min).toFloat
+            func()
         }
     }
 
-    override def mouseRelease(x: Int, y: Int): Unit = {
-        if(isDrag) isDrag = !isDrag
+    override def mouseRelease(x: Int, y: Int,button:Int): Unit = {
+        if (isDrag) isDrag = !isDrag
     }
 
     def isMouseOver(mouseX: Int, mouseY: Int): Boolean = {
-        enable && mouseX >= posX && mouseX <= posX + weidth && mouseY >= posY && mouseY <= posY + height
+        enable && mouseX >= posX && mouseX <= posX + widthIn && mouseY >= posY && mouseY <= posY + height
     }
 }

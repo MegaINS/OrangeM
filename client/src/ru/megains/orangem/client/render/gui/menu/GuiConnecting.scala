@@ -1,30 +1,27 @@
-package ru.megains.orangem.client.scene
+package ru.megains.orangem.client.render.gui.menu
 
-import java.net.{InetAddress, UnknownHostException}
+import ru.megains.mge.Scene
 import ru.megains.mge.render.MContainer
-import ru.megains.mge.{Mouse, Scene, Window}
-import ru.megains.mge.render.camera.OrthographicCamera
-import ru.megains.mge.render.shader.Shader
-import ru.megains.orangem.common.network.{ConnectionState, NetworkManager}
+import ru.megains.orangem.client.OrangeM
+import ru.megains.orangem.client.network.handler.NetHandlerLoginClient
+import ru.megains.orangem.client.network.{NetworkManagerClient, ServerAddress, ServerData}
+import ru.megains.orangem.client.render.gui.base.GuiScreen
+import ru.megains.orangem.client.render.gui.element.MButton
+import ru.megains.orangem.client.utils.Logger
 import ru.megains.orangem.common.network.packet.handshake.client.CHandshake
 import ru.megains.orangem.common.network.packet.login.client.CPacketLoginStart
-import ru.megains.orangem.client.network.NetworkManagerClient
-import org.lwjgl.opengl.GL11._
-import ru.megains.orangem.client.OrangeMClient
-import ru.megains.orangem.client.network.{NetworkManagerClient, ServerAddress, ServerData}
-import ru.megains.orangem.client.network.handler.NetHandlerLoginClient
-import ru.megains.orangem.client.render.gui.element.MButton
-import ru.megains.orangem.client.render.shader.GuiShader
-import ru.megains.orangem.client.utils.Logger
+import ru.megains.orangem.common.network.{ConnectionState, NetworkManager}
 
-class ConnectingScene(multiPlayerScene: MultiPlayerScene, orangeM: OrangeMClient, serverDataIn: ServerData) extends BaseScene with Logger[ConnectingScene] {
+import java.net.{InetAddress, UnknownHostException}
+
+class GuiConnecting(previousScreen: GuiScreen, orangeM: OrangeM, serverDataIn: ServerData) extends GuiScreen with Logger[GuiConnecting] {
 
     val serveraddress: ServerAddress = new ServerAddress(serverDataIn.serverIP, 20000)
     var networkManager: NetworkManager = _
     var cancel = false
-    var error: Scene = _
-    val buttonCancel: MButton = new MButton("Cancel", 300, 40, () => {
-        orangeM.setScene(new MainMenuScene(orangeM))
+    var error: GuiScreen = _
+    val buttonCancel: MButton = new MButton("Cancel", 300, 40, _ => {
+        //orangeM.displayGuiScreen(previousScreen)
     })
 
     connect(serveraddress.getIP, serveraddress.getPort)
@@ -41,21 +38,21 @@ class ConnectingScene(multiPlayerScene: MultiPlayerScene, orangeM: OrangeMClient
 
                     inetaddress = InetAddress.getByName(ip)
                     networkManager = NetworkManagerClient.createNetworkManagerAndConnect(inetaddress, port, orangeM)
-                    networkManager.setNetHandler(new NetHandlerLoginClient(networkManager, orangeM, multiPlayerScene))
+                    networkManager.setNetHandler(new NetHandlerLoginClient(networkManager, orangeM, previousScreen))
                     networkManager.sendPacket(new CHandshake(210, ip, port, ConnectionState.LOGIN))
                     networkManager.sendPacket(new CPacketLoginStart(orangeM.playerName))
                     orangeM.networkManager = networkManager
                 }
                 catch {
-                    case unknownhostexception: UnknownHostException => {
+                    case unknownhostexception: UnknownHostException =>
                         if (cancel) {
                             return
                         }
                         log.error("Couldn\'t connect to server", unknownhostexception.asInstanceOf[Throwable])
 
-                        error = new DisconnectedScene(multiPlayerScene, orangeM, "connect.failed", "Unknown host")
-                    }
-                    case exception: Exception => {
+                        error = new GuiDisconnected(previousScreen, orangeM, "connect.failed", "Unknown host")
+
+                    case exception: Exception =>
                         if (cancel) {
                             return
                         }
@@ -65,8 +62,8 @@ class ConnectingScene(multiPlayerScene: MultiPlayerScene, orangeM: OrangeMClient
                             val s1: String = inetaddress + ":" + port
                             s = s.replaceAll(s1, "")
                         }
-                        error = new DisconnectedScene(multiPlayerScene, orangeM, "connect.failed", s)
-                    }
+                        error = new GuiDisconnected(previousScreen, orangeM, "connect.failed", s)
+
                 }
             }
         }.start()
@@ -76,7 +73,7 @@ class ConnectingScene(multiPlayerScene: MultiPlayerScene, orangeM: OrangeMClient
     override def update(): Unit = {
         super.update()
         if (error != null) {
-            orangeM.setScene(error)
+           // orangeM.displayGuiScreen(error)
         }
     }
 
@@ -85,4 +82,7 @@ class ConnectingScene(multiPlayerScene: MultiPlayerScene, orangeM: OrangeMClient
         buttonCancel.posY = height - 70
     }
 
+    override def init(): Unit = {
+
+    }
 }

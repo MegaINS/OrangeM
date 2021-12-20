@@ -4,10 +4,10 @@ import imgui.ImGui
 import imgui.flag.ImGuiConfigFlags
 import imgui.gl3.ImGuiImplGl3
 import imgui.glfw.ImGuiImplGlfw
-import ru.megains.orangem.client.scene.GameScene
-import ru.megains.orangem.client.Options.renderRange
+import ru.megains.orangem.client.scene.SceneGame
 
-class ImGuiRender(gameScene: GameScene) {
+
+class ImGuiRender(gameScene: SceneGame) {
 
     private val imGuiGlfw = new ImGuiImplGlfw
     private val imGuiGl3 = new ImGuiImplGl3
@@ -49,11 +49,11 @@ class ImGuiRender(gameScene: GameScene) {
 
         def imgui(): Unit = {
             ImGui.begin("Cool Window")
-            ImGui.sliderInt2("renderRangeH", renderRange, 1, 50)
+           // ImGui.sliderInt2("renderRangeH", renderRange, 1, 50)
             if (ImGui.button("I am a button")) showText = true
             if (showText) {
                 ImGui.text("You clicked a button")
-                ImGui.sameLine
+                ImGui.sameLine()
                 if (ImGui.button("Stop showing text")) showText = false
             }
             ImGui.end

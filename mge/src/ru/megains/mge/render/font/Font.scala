@@ -3,11 +3,12 @@ package ru.megains.mge.render.font
 import java.io.IOException
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL11._
-import org.lwjgl.stb.STBTruetype.{stbtt_PackBegin, stbtt_PackEnd, stbtt_PackFontRange, stbtt_PackSetOversampling}
-import org.lwjgl.stb.{STBTTBakedChar, STBTTPackContext, STBTTPackedchar, STBTruetype}
+import org.lwjgl.stb.STBTruetype.{stbtt_GetCodepointHMetrics, stbtt_InitFont, stbtt_PackBegin, stbtt_PackEnd, stbtt_PackFontRange, stbtt_PackSetOversampling, stbtt_ScaleForPixelHeight}
+import org.lwjgl.stb.{STBTTBakedChar, STBTTFontinfo, STBTTPackContext, STBTTPackedchar, STBTruetype}
 import org.lwjgl.system.MemoryUtil.NULL
 import ru.megains.mge.render.texture.{TTexture, TextureData}
 import ru.megains.mge.{File => FileM}
+import sun.java2d.loops.FontInfo
 
 import java.nio.ByteBuffer
 
@@ -19,7 +20,8 @@ class Font(textureData: TextureData) extends TTexture(textureData) {
     val BITMAP_H = 2024
     var cdata: STBTTPackedchar.Buffer = _
     private val scale = Array(24.0f, 14.0f, 36f)
-
+    var info:STBTTFontinfo = _
+    var ttf:ByteBuffer =_
 //    def this(name: String)= {
 //        this(new TextureData())
 //        height = 24
@@ -59,7 +61,11 @@ class Font(textureData: TextureData) extends TTexture(textureData) {
 
         try {
             cdata = STBTTPackedchar.malloc(9 * 1500)
-            val ttf = FileM.ioResourceToByteBuffer(s"fonts/$name.ttf", 512 * 1024)
+            ttf = FileM.ioResourceToByteBuffer(s"fonts/$name.ttf", 512 * 1024)
+
+            info = STBTTFontinfo.create()
+            stbtt_InitFont(info, ttf)
+
             val bitmap = BufferUtils.createByteBuffer(BITMAP_W * BITMAP_H)
             stbtt_PackBegin(pc, bitmap, BITMAP_W, BITMAP_H, 0, 1, NULL)
             for (i <- 0 until 3) {
@@ -106,6 +112,17 @@ class Font(textureData: TextureData) extends TTexture(textureData) {
                 throw new RuntimeException(e)
         } finally if (pc != null) pc.close()
 
+    }
+
+    def getWidth(text: String): Float = {
+        var length = 0f
+        for (i <- 0 until text.length) {
+            val advancewidth = BufferUtils.createIntBuffer(1)
+            val leftsidebearing = BufferUtils.createIntBuffer(1)
+            stbtt_GetCodepointHMetrics(info, text.charAt(i).toInt, advancewidth, leftsidebearing)
+            length += advancewidth.get(0)
+        }
+        length* stbtt_ScaleForPixelHeight(info, 24);
     }
 
 }

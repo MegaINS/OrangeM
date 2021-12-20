@@ -4,17 +4,17 @@ import org.lwjgl.glfw.GLFW._
 import ru.megains.mge.Window
 import ru.megains.mge.render.MSprite
 import ru.megains.mge.render.texture.Texture
+import ru.megains.orangem.client.OrangeM
+import ru.megains.orangem.client.scene.SceneGame
 import ru.megains.orangem.common.entity.player.EntityPlayer
 
-class GuiPlayerInventory(entityPlayer: EntityPlayer) extends GuiContainer(entityPlayer.inventoryContainer) {
+class GuiPlayerInventory(entityPlayer: EntityPlayer,gameScene: SceneGame) extends GuiContainer(entityPlayer.inventoryContainer,gameScene: SceneGame) {
 
-    override def init(): Unit = {
-        val playerInventory = new MSprite(new Texture("textures/gui/playerInventory.png"), 500, 240)
+    val playerInventory = new MSprite(new Texture("textures/gui/playerInventory.png"), 500, 240)
 
+    override def init(gameIn: OrangeM): Unit = {
+        super.init(gameIn)
         addChildren(playerInventory)
-        posX = (Window.width - 500) / 2
-        posY = Window.height - 240
-        super.init()
     }
 
     override def resize(width:Int,height:Int): Unit = {

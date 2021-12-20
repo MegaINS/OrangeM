@@ -1,6 +1,6 @@
 package ru.megains.orangem.client.network
 
-import ru.megains.orangem.client.OrangeMClient
+import ru.megains.orangem.client.OrangeM
 import ru.megains.orangem.client.network.handler.NetHandlerStatusClient
 import ru.megains.orangem.client.utils.Logger
 
@@ -10,12 +10,12 @@ import ru.megains.orangem.common.network.packet.handshake.client.CHandshake
 import ru.megains.orangem.common.network.packet.status.client.CPacketServerQuery
 
 
-class ServerPinger(orangeM: OrangeMClient) extends Logger[ServerPinger] {
+class ServerPinger(orangeM: OrangeM) extends Logger[ServerPinger] {
 
     //  private val pingDestinations: util.List[NetworkManager] = Collections.synchronizedList[NetworkManager](Lists.newArrayList[NetworkManager])
 
     @throws[UnknownHostException]
-    def ping(server: ServerData) {
+    def ping(server: ServerData): Unit = {
         val serveraddress: ServerAddress = new ServerAddress(server.serverIP, 20000)
         // val networkmanager: NetworkManager = NetworkManager.createLocalClient(LocalAddress.ANY)
 

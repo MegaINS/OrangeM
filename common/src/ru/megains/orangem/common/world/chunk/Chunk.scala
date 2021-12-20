@@ -15,13 +15,11 @@ class Chunk(val pos: ChunkPosition, val world: World) extends Logger[Chunk]{
 
     val blockStorage = new BlockStorage(pos)
 
-    def isEmpty: Boolean = false
+    var isEmpty: Boolean = true
 
     def getBlock(x: Int, y: Int, z: Int):BlockState = {
         blockStorage.getBlock(x & (Chunk.blockSize-1), y & (Chunk.blockSize-1), z & (Chunk.blockSize-1))
     }
-
-
 
     def getBlockByLocPos(x: Int, y: Int, z: Int):BlockState ={
         blockStorage.getBlock(x, y, z)

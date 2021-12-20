@@ -1,12 +1,13 @@
 package ru.megains.orangem.client.network.handler
 
 import ru.megains.mge.Scene
-import ru.megains.orangem.client.OrangeMClient
+import ru.megains.mge.render.MContainer
+import ru.megains.orangem.client.OrangeM
 import ru.megains.orangem.common.network.{ConnectionState, NetworkManager}
 import ru.megains.orangem.common.network.handler.INetHandlerLoginClient
 import ru.megains.orangem.common.network.packet.login.server.{SPacketDisconnect, SPacketLoginSuccess}
 
-class NetHandlerLoginClient(networkManager: NetworkManager, gameController: OrangeMClient, previousScene: Scene) extends INetHandlerLoginClient {
+class NetHandlerLoginClient(networkManager: NetworkManager, gameController: OrangeM, previousScene: MContainer) extends INetHandlerLoginClient {
 
 
     override def handleDisconnect(packetIn: SPacketDisconnect): Unit = {

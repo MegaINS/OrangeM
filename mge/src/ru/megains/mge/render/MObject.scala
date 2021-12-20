@@ -45,13 +45,16 @@ abstract class MObject {
 
     }
 
-    def mousePress(x:Int,y:Int):Unit= {
+    def mousePress(x:Int,y:Int,button: Int):Unit= {
 
     }
 
-    def mouseRelease(x:Int,y:Int):Unit= {
+    def mouseRelease(x:Int,y:Int,button: Int):Unit= {
 
     }
 
+    def resize(width:Int,height:Int):Unit= {
+
+    }
 
 }

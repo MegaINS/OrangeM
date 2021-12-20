@@ -4,24 +4,24 @@ import org.joml.Vector3i
 import org.lwjgl.glfw.GLFW._
 import ru.megains.mge.{Mouse, Scene, Window}
 import ru.megains.orangem.common.block.data.BlockState
-import ru.megains.orangem.client.{OrangeMClient, PlayerController}
-import ru.megains.orangem.client.render.{ChunkRenderer, GameRenderer, GuiRenderer, ImGuiRender}
+import ru.megains.orangem.client.{GameSettings, OrangeM, PlayerController}
+import ru.megains.orangem.client.render.{ChunkRenderer, ImGuiRender, RendererGame, RendererGui}
 import ru.megains.orangem.client.utils.Logger
 import ru.megains.orangem.common.entity.player.EntityPlayer
 import ru.megains.orangem.common.item.ItemBlock
 import ru.megains.orangem.common.item.itemstack.ItemStack
 import ru.megains.orangem.common.utils.{FrameCounter, RayTraceResult, RayTraceType}
 import ru.megains.orangem.common.world.World
-import ru.megains.orangem.client.OrangeMClient
-import ru.megains.orangem.client.render.GuiRenderer
+import ru.megains.orangem.client.render.RendererGui
+import ru.megains.orangem.common.world.data.AnvilSaveHandler
 
-class GameScene(val game:OrangeMClient) extends Scene with Logger[GameScene]{
+class SceneGame(val game:OrangeM,saveHandler: AnvilSaveHandler) extends Scene with Logger[SceneGame]{
 
-    var world:World = new World()
+    var world:World = new World(saveHandler)
+    val settings: GameSettings = game.gameSettings
     var player:EntityPlayer = new EntityPlayer(game.playerName)
-    val gameRenderer:GameRenderer  = new GameRenderer(this)
-    val guiRenderer:GuiRenderer  = new GuiRenderer(this)
-    val imGuiRender = new ImGuiRender(this)
+    val gameRenderer:RendererGame  = new RendererGame(this)
+    val guiRenderer:RendererGui  = new RendererGui(this)
     val moved = new Vector3i(0,0,0)
     var rayTrace: RayTraceResult = RayTraceResult.VOID
     var blockSetPosition:BlockState = _
@@ -35,11 +35,10 @@ class GameScene(val game:OrangeMClient) extends Scene with Logger[GameScene]{
         world.addEntity(player)
         gameRenderer.init()
         guiRenderer.init()
-        imGuiRender.init()
         FrameCounter.start()
         player.world = world
 
-        player.setPosition(0,world.heightMap.getChunkHeightMap(0,0).getHeight(0,0)+1,0)
+        player.setPosition(16,world.heightMap.getChunkHeightMap(0,0).getHeight(16,16)+1,16)
         Window.window.setSwapInterval(0)
     }
 
@@ -47,7 +46,6 @@ class GameScene(val game:OrangeMClient) extends Scene with Logger[GameScene]{
 
         gameRenderer.render()
         guiRenderer.render()
-        imGuiRender.render()
         FrameCounter.gameRender()
 
     }
@@ -55,34 +53,38 @@ class GameScene(val game:OrangeMClient) extends Scene with Logger[GameScene]{
     override def update(): Unit = {
         world.update()
         FrameCounter.gameUpdate()
+        if(!guiRenderer.isOpenGui){
+            moved.zero()
+            if (glfwGetKey(game.window.id, GLFW_KEY_W) == GLFW_PRESS) moved.add(0,0,-1)
+            if (glfwGetKey(game.window.id, GLFW_KEY_S) == GLFW_PRESS) moved.add(0,0,1)
+            if (glfwGetKey(game.window.id, GLFW_KEY_A) == GLFW_PRESS) moved.add(-1,0,0)
+            if (glfwGetKey(game.window.id, GLFW_KEY_D) == GLFW_PRESS) moved.add(1,0,0)
+            if (glfwGetKey(game.window.id, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) moved.add(0,-1,0)
+            if (glfwGetKey(game.window.id, GLFW_KEY_SPACE) == GLFW_PRESS) moved.add(0,1,0)
 
-        moved.zero()
-        if (glfwGetKey(game.window.id, GLFW_KEY_W) == GLFW_PRESS) moved.add(0,0,-1)
-        if (glfwGetKey(game.window.id, GLFW_KEY_S) == GLFW_PRESS) moved.add(0,0,1)
-        if (glfwGetKey(game.window.id, GLFW_KEY_A) == GLFW_PRESS) moved.add(-1,0,0)
-        if (glfwGetKey(game.window.id, GLFW_KEY_D) == GLFW_PRESS) moved.add(1,0,0)
-        if (glfwGetKey(game.window.id, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) moved.add(0,-1,0)
-        if (glfwGetKey(game.window.id, GLFW_KEY_SPACE) == GLFW_PRESS) moved.add(0,1,0)
+            player.inventory.changeStackSelect(Mouse.getDWheel * -1)
 
-        player.inventory.changeStackSelect(Mouse.getDWheel * -1)
+            player.turn(Mouse.getDY.toFloat, Mouse.getDX.toFloat)
 
-        if (!guiRenderer.isOpenGui)  player.turn(Mouse.getDY.toFloat, Mouse.getDX.toFloat)
-
-        player.update(moved.x,moved.y,moved.z)
+            player.update(moved.x,moved.y,moved.z)
 
 
-        rayTrace = player.rayTrace(5)
+            rayTrace = player.rayTrace(5)
 
-        if (rayTrace.traceType == RayTraceType.BLOCK) {
+            if (rayTrace.traceType == RayTraceType.BLOCK) {
 
-            val stack: ItemStack = player.inventory.getStackSelect
-            if(stack != null){
-                blockSetPosition = stack.item match {
-                    case itemBlock:ItemBlock =>itemBlock.block.getSelectPosition(world, player, rayTrace)
-                    case _ => null
-                }
-            } else  blockSetPosition = null
-        }else blockSetPosition = null
+                val stack: ItemStack = player.inventory.getStackSelect
+                if(stack != null){
+                    blockSetPosition = stack.item match {
+                        case itemBlock:ItemBlock =>itemBlock.block.getSelectPosition(world, player, rayTrace)
+                        case _ => null
+                    }
+                } else  blockSetPosition = null
+            }else blockSetPosition = null
+            gameRenderer.update()
+        }
+
+        guiRenderer.update()
 
 
         while (FrameCounter.isTimePassed(1000)) {
@@ -94,9 +96,6 @@ class GameScene(val game:OrangeMClient) extends Scene with Logger[GameScene]{
             FrameCounter.step(1000)
         }
 
-
-        gameRenderer.update()
-        guiRenderer.update()
     }
 
     def runTickMouse(button: Int,action: Int, mods: Int): Unit = {
@@ -117,7 +116,9 @@ class GameScene(val game:OrangeMClient) extends Scene with Logger[GameScene]{
 
 
     override def destroy(): Unit = {
-
+        world.save()
+        gameRenderer.destroy()
+       // guiRenderer.destroy()
     }
 
     override def resize(width:Int,height:Int): Unit =

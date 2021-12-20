@@ -2,9 +2,6 @@ package ru.megains.mge
 
 trait Scene {
 
-
-    def runTickKeyboard(key: Int, action: Int, mods: Int):Unit
-
     def init():Unit
 
     def render():Unit
@@ -14,6 +11,8 @@ trait Scene {
     def resize(width:Int,height:Int): Unit
 
     def destroy():Unit
+
+    def runTickKeyboard(key: Int, action: Int, mods: Int):Unit
 
     def runTickMouse(button: Int,action: Int, mods: Int):Unit
 

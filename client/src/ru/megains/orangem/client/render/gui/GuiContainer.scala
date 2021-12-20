@@ -5,16 +5,16 @@ import org.lwjgl.glfw.GLFW.{GLFW_KEY_E, GLFW_KEY_ESCAPE}
 import ru.megains.mge.Mouse
 import ru.megains.mge.render.model.Model
 import ru.megains.mge.render.shader.Shader
-import ru.megains.orangem.client.render.gui.base.{Gui, GuiGame}
+import ru.megains.orangem.client.render.gui.base.{Gui, GuiInGame, GuiScreen}
 import ru.megains.orangem.client.render.gui.item.GuiItemStack
+import ru.megains.orangem.client.scene.SceneGame
 import ru.megains.orangem.common.container.Container
 import ru.megains.orangem.common.entity.player.EntityPlayer
 import ru.megains.orangem.common.inventory.Slot
 import ru.megains.orangem.common.item.itemstack.ItemStack
-import ru.megains.orangem.client.render.gui.base.GuiGame
 
 
-abstract class GuiContainer(val inventorySlots: Container) extends GuiGame {
+abstract class GuiContainer(val inventorySlots: Container,gameScene: SceneGame) extends GuiScreen {
 
 
     val rect: Model = Gui.createRect(40, 40, new Color(200, 255, 100, 100))
@@ -49,6 +49,15 @@ abstract class GuiContainer(val inventorySlots: Container) extends GuiGame {
         }
     }
 
+   override def keyTyped(typedChar: Char, keyCode: Int): Unit = {
+        keyCode match {
+            case GLFW_KEY_E | GLFW_KEY_ESCAPE =>
+                // tar.playerController.net.sendPacket(new CPacketCloseWindow)
+                gameScene.guiRenderer.closeGui()
+            case _ =>
+        }
+    }
+
     override def render(shader: Shader): Unit = {
         super.render(shader)
         if(itemStackRender!=null){
@@ -58,8 +67,8 @@ abstract class GuiContainer(val inventorySlots: Container) extends GuiGame {
         }
     }
 
-    override def mouseClicked(x: Int, y: Int, button: Int, player: EntityPlayer): Unit = {
-        inventorySlots.mouseClicked(x-posX.toInt,y-posY.toInt,button,player)
+    override def mousePress(x: Int, y: Int, button: Int): Unit = {
+        inventorySlots.mouseClicked(x-posX.toInt,y-posY.toInt,button,gameScene.player)
        // player.openContainer.mouseClicked(x-posX, y-posY, button, player)
        // tar.playerController.windowClick(x-posX, y-posY, button, player: EntityPlayer)
     }

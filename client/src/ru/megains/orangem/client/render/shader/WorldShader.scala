@@ -4,7 +4,7 @@ import ru.megains.mge.render.camera.Camera
 import ru.megains.mge.render.shader.Shader
 
 
-class WorldShader extends Shader {
+private class WorldShader extends Shader {
 
 
     override val dir: String = "shaders/basic"

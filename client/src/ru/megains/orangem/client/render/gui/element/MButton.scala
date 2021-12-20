@@ -11,18 +11,21 @@ import ru.megains.orangem.client.render.Resources
 import ru.megains.orangem.client.render.gui.base.Gui
 
 
-class MButton(val buttonText: String, weidth: Int, height: Int,func:()=>Unit) extends MContainer {
+class MButton(val buttonText: String, widthIn: Int, heightIn: Int, func:MButton=>Unit) extends GuiElement {
+
+    override val height: Int = heightIn
+    override val width: Int = widthIn
 
 
     val textMesh: Label = new Label(buttonText){
-        posX =10
+        posX = (widthIn - width)/2
         posY = 10
     }
 
-    val buttonUp:MSprite = new MSprite(new TextureRegion(Resources.WIDGETS,0,66,200,20),weidth,height)
+    val buttonUp:MSprite = new MSprite(new TextureRegion(Resources.WIDGETS,0,66,200,20),width,height)
 
-    val buttonUpOver:MSprite = new MSprite(new TextureRegion(Resources.WIDGETS,0,86,200,20),weidth,height)
-    val buttonDisable:MSprite = new MSprite(new TextureRegion(Resources.WIDGETS,0,46,200,20),weidth,height)
+    val buttonUpOver:MSprite = new MSprite(new TextureRegion(Resources.WIDGETS,0,86,200,20),width,height)
+    val buttonDisable:MSprite = new MSprite(new TextureRegion(Resources.WIDGETS,0,46,200,20),width,height)
     var enable = true
     var over = false
     var click = false
@@ -51,58 +54,45 @@ class MButton(val buttonText: String, weidth: Int, height: Int,func:()=>Unit) ex
 
     override def update(): Unit = {
 
-
-
         if (!enable) {
             buttonDisable.active = true
+            buttonUp.active = false
         } else{
             buttonDisable.active = false
-
-//                if(click) {
-//                    posX +=2
-//                    posY+=2
-//
-//                } else {
-//                    posX -=2
-//                    posY-=2
-//
-//                }
-
-
-
-
+            buttonUp.active = true
         }
-
     }
 
     override def mouseMove(x: Int, y: Int): Unit = {
-        if(over != isMouseOver(Mouse.getX,Mouse.getY)){
-            over = isMouseOver(Mouse.getX,Mouse.getY)
-            if(over) {
-                buttonUp.active = false
-                buttonUpOver.active = true
+        if(enable){
+            if(over != isMouseOver(Mouse.getX,Mouse.getY)){
+                over = isMouseOver(Mouse.getX,Mouse.getY)
+                if(over) {
+                    buttonUp.active = false
+                    buttonUpOver.active = true
 
-            } else {
-                buttonUp.active = true
-                buttonUpOver.active = false
+                } else {
+                    buttonUp.active = true
+                    buttonUpOver.active = false
 
+                }
             }
         }
     }
 
 
-    override def mousePress(x: Int, y: Int): Unit = {
-        if(isMouseOver(x: Int, y: Int)){
-            func()
+    override def mousePress(x: Int, y: Int,button:Int): Unit = {
+        if(enable){
+            if(isMouseOver(x: Int, y: Int)){
+                func(this)
+            }
         }
-    }
-
-    override def mouseRelease(x:Int,y:Int):Unit= {
 
     }
-    def isMouseOver(mouseX: Int, mouseY: Int): Boolean = {
-        enable && mouseX >= posX && mouseX <= posX + weidth && mouseY >= posY && mouseY <= posY + height
+
+    override def mouseRelease(x:Int,y:Int,button:Int):Unit= {
+
     }
 
-
+    override def init(): Unit = {}
 }

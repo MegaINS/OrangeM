@@ -10,30 +10,29 @@ import org.lwjgl.glfw.GLFW._
 import ru.megains.mge.Window
 import ru.megains.mge.render.camera.PerspectiveCamera
 import ru.megains.mge.render.shader.Shader
-import ru.megains.orangem.client.render.shader.WorldShader
-import ru.megains.orangem.client.utils.Logger
+import ru.megains.orangem.client.render.shader.{ShaderManager, WorldShader}
 import org.lwjgl.opengl.GL11._
 import ru.megains.mge.render.mesh.MeshMaker
 import ru.megains.mge.render.model.Model
 import ru.megains.mge.render.texture.Texture
 import ru.megains.orangem.client.render.block.RenderBlock
 import ru.megains.orangem.client.render.shader.WorldShader
-import ru.megains.orangem.client.scene.GameScene
+import ru.megains.orangem.client.scene.SceneGame
 import ru.megains.orangem.client.utils.{Frustum, Logger}
 
 import java.awt.Color
 import java.nio.FloatBuffer
 
-class GameRenderer(gameScene: GameScene) extends Logger[GameRenderer] {
+class RendererGame(gameScene: SceneGame) extends Logger[RendererGame] {
 
 
     val Z_NEAR: Float = 0.01f
     val Z_FAR: Float = 2000f
     val FOV: Float = Math.toRadians(45.0f).toFloat
 
-    var worldShader: Shader = new WorldShader()
+    var worldShader: Shader = ShaderManager.worldShader
     var worldCamera: PerspectiveCamera = new PerspectiveCamera(FOV, Window.width, Window.height, Z_NEAR, Z_FAR)
-    var worldRenderer: WorldRenderer = new WorldRenderer(gameScene.world)
+    var worldRenderer: WorldRenderer = new WorldRenderer(gameScene)
     var skyBoxRenderer = new SkyBoxRenderer()
     var rayTraceRender: RayTraceRender = new RayTraceRender(gameScene)
     var blockPlaceSetRender: BlockSetPositionRender = new BlockSetPositionRender()
@@ -46,8 +45,6 @@ class GameRenderer(gameScene: GameScene) extends Logger[GameRenderer] {
         glEnable(GL_STENCIL_TEST)
         glEnable(GL_DEPTH_TEST)
         glLineWidth( 	0.5f)
-        worldShader.create()
-
         rayTraceRender.init()
         skyBoxRenderer.init()
         chunkBoundsRenderer.init()
@@ -69,7 +66,7 @@ class GameRenderer(gameScene: GameScene) extends Logger[GameRenderer] {
 
     def renderWorld(): Unit = {
 
-        worldCamera.setPerspective(FOV, Window.width, Window.height, Z_NEAR, Z_FAR)
+        worldCamera.setPerspective(Math.toRadians(gameScene.settings.FOV).toFloat, Window.width, Window.height, Z_NEAR, Z_FAR)
         worldCamera.setPos(gameScene.player.posX, gameScene.player.posY + gameScene.player.levelView, gameScene.player.posZ)
         worldCamera.setRot(gameScene.player.rotPitch, gameScene.player.rotYaw, 0)
 
@@ -82,7 +79,7 @@ class GameRenderer(gameScene: GameScene) extends Logger[GameRenderer] {
 
         Frustum.calculateFrustum(_proj, _modl)
 
-        worldShader.bind()
+        ShaderManager.bindShader(worldShader)
         worldShader.setUniform(worldCamera)
 
         worldRenderer.render(gameScene.player, worldShader)
@@ -93,13 +90,21 @@ class GameRenderer(gameScene: GameScene) extends Logger[GameRenderer] {
         glEnable(GL_DEPTH_TEST)
         chunkBoundsRenderer.render(worldShader)
 
-        worldShader.unbind()
+        ShaderManager.unbindShader()
     }
 
 
 
 
+    def destroy(): Unit ={
 
+
+        worldRenderer.cleanUp()
+        skyBoxRenderer.cleanUp()
+        rayTraceRender.cleanUp()
+        blockPlaceSetRender.cleanUp()
+        chunkBoundsRenderer.cleanUp()
+    }
 
 
 }

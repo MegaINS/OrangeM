@@ -1,6 +1,6 @@
 package ru.megains.orangem.common.utils
 
-class Timer(val targetTick:Double) {
+class Timer(var targetTick:Double) {
 
     var lastLoopTime = .0
     var tick = 0

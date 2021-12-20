@@ -7,11 +7,13 @@ import ru.megains.orangem.common.entity.Entity
 import ru.megains.orangem.common.physics.BoundingBox
 import ru.megains.orangem.common.utils.{Direction, Logger, RayTraceResult}
 import ru.megains.orangem.common.world.chunk.Chunk
-import ru.megains.orangem.common.world.chunk.data.ChunkProvider
+import ru.megains.orangem.common.world.chunk.data.{ChunkLoader, ChunkProvider}
+import ru.megains.orangem.common.world.data.AnvilSaveHandler
 
 import scala.collection.mutable
+import scala.util.Random
 
-class World() extends Logger[World] {
+class World(saveHandler: AnvilSaveHandler) extends Logger[World] {
 
 
     val height: Int = 10000
@@ -19,8 +21,9 @@ class World() extends Logger[World] {
     val width: Int = 10000
     val chunkMap = new mutable.HashMap[Long, Chunk]()
     val entities: mutable.HashSet[Entity] = new mutable.HashSet[Entity]()
-    val chunkProvider: IChunkProvider = new ChunkProvider(this /*,chunkLoader*/)
-    val heightMap: WorldHeightMap = new WorldHeightMap(1)
+    val chunkLoader: ChunkLoader = saveHandler.getChunkLoader
+    val chunkProvider: IChunkProvider = new ChunkProvider(this ,chunkLoader)
+    val heightMap: WorldHeightMap = new WorldHeightMap(Random.nextInt())
 
     def init(): Unit = {
 
@@ -270,5 +273,21 @@ class World() extends Logger[World] {
         }
         aabbs
     }
+    def save(): Unit = {
+        log.info("World saved...")
+        log.info("Saving chunks for level \'{}\'/{}")
+        saveAllChunks(true)
+        log.info("Saving players for level \'{}\'/{}")
+        //todo
+        //        entities.splitter. foreach {
+        //            case entityPlayer:EntityPlayer =>
+        //                saveHandler.writePlayerData(entityPlayer)
+        //            case _ =>
+        //        }
+        log.info("World saved completed")
+    }
+    def saveAllChunks(p_73044_1: Boolean /*, progressCallback: IProgressUpdate*/): Unit = {
 
+        chunkProvider.saveChunks(p_73044_1)
+    }
 }

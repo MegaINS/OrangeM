@@ -1,13 +1,13 @@
 package ru.megains.orangem.client.network
 
-import ru.megains.orangem.client.OrangeMClient
+import ru.megains.orangem.client.OrangeM
 import ru.megains.orangem.client.entity.EntityPlayerSP
 import ru.megains.orangem.client.network.handler.NetHandlerPlayClient
 import ru.megains.orangem.common.entity.player.{EntityPlayer, GameType}
 import ru.megains.orangem.common.network.packet.play.client.CPacketClickWindow
 import ru.megains.orangem.common.world.World
 
-class PlayerControllerSP(tar:OrangeMClient, val net: NetHandlerPlayClient) {
+class PlayerControllerSP(tar:OrangeM, val net: NetHandlerPlayClient) {
 
 
 

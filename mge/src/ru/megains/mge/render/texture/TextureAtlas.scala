@@ -16,7 +16,7 @@ class TextureAtlas(data: TextureData) extends TTexture(data) {
     var startY: Int = 0
 
     def this(filePath: String)={
-        this(new TextureData(File.ioResourceToByteBuffer(filePath, 8 * 1024)))
+        this(new TextureData(filePath,File.ioResourceToByteBuffer(filePath, 8 * 1024)))
     }
 
 

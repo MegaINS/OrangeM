@@ -7,9 +7,9 @@ import ru.megains.mge.render.shader.Shader
 import ru.megains.orangem.common.utils.{RayTraceResult, RayTraceType}
 import org.lwjgl.opengl.GL11._
 import ru.megains.orangem.client.render.block.RenderBlock
-import ru.megains.orangem.client.scene.GameScene
+import ru.megains.orangem.client.scene.SceneGame
 
-class RayTraceRender(gameScene: GameScene) {
+class RayTraceRender(gameScene: SceneGame) {
 
 
     var selectPos: Array[Model] = new Array[Model](6)
@@ -150,5 +150,8 @@ class RayTraceRender(gameScene: GameScene) {
     def renderSelectPos(shader: Shader): Unit = {
         selectPos(rayTrace.sideHit.id).render(shader)
     }
-
+    def cleanUp(): Unit ={
+       selectPos.foreach(_.cleanUp())
+        blockMouseOver.cleanUp()
+    }
 }

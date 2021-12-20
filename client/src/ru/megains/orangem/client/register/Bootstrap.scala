@@ -1,7 +1,7 @@
 package ru.megains.orangem.client.register
 
 import ru.megains.orangem.common.block.{Block, BlockAir, BlockGlass, BlockLeaves, BlockTest}
-import ru.megains.orangem.client.OrangeMClient
+import ru.megains.orangem.client.OrangeM
 import ru.megains.orangem.client.render.block.{RenderBlockGlass, RenderBlockGrass, RenderBlockLeaves, RenderBlockLog}
 import ru.megains.orangem.client.render.entity.RenderEntityCube
 import ru.megains.orangem.client.utils.Logger
@@ -12,7 +12,7 @@ import ru.megains.orangem.common.register.TGameRegister
 import ru.megains.orangem.common.register.{Bootstrap => BootstrapCommon}
 import ru.megains.orangem.client.render.block.RenderBlockGrass
 
-object Bootstrap extends Logger[OrangeMClient] {
+object Bootstrap extends Logger[OrangeM] {
 
     var isNotInit = true
 

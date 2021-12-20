@@ -3,6 +3,7 @@ package ru.megains.orangem.client.render
 import ru.megains.mge.render.mesh.{Mesh, MeshMaker}
 import ru.megains.mge.render.model.{Model, TModel}
 import ru.megains.mge.render.shader.Shader
+import ru.megains.orangem.client.OrangeM
 import ru.megains.orangem.common.block.{BlockAir, BlockCell}
 import ru.megains.orangem.client.register.GameRegisterRender
 import ru.megains.orangem.client.render.texture.GameTextureManager
@@ -61,7 +62,7 @@ class ChunkRenderer(posX: Int, posY: Int, posZ: Int, world: World) extends TMode
                 mesh(layer) = mm.make()
                 notEmpty = true
             } else {
-                if (blocks.sum < 0) notEmpty = false
+                if (blocks.sum <= 0) notEmpty = false
             }
         }
     }
@@ -113,12 +114,11 @@ class ChunkRenderer(posX: Int, posY: Int, posZ: Int, world: World) extends TMode
 
 object ChunkRenderer {
 
+    var game:OrangeM = _
 
-    var a = 2
 
     def isNext: Boolean = {
-        if (isRender && (System.currentTimeMillis() - startTime) < (1000f / 120)) {
-            a-=1
+        if (isRender && (System.currentTimeMillis() - startTime) < (1000f / (game.gameSettings.FPS*2f))) {
             true
         } else {
             isRender = false
@@ -147,7 +147,6 @@ object ChunkRenderer {
 
     def resetRenderTime(): Unit = {
         isRender = true
-        a = 2
         startTime = System.currentTimeMillis()
     }
 }

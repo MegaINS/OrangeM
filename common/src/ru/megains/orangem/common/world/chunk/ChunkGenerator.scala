@@ -44,11 +44,12 @@ class ChunkGenerator(world: World) {
 
 
 
-        if(chunkHeightMap.getMaxHeight < (chunkY) * Chunk.blockSize){
+        if(chunkHeightMap.getMaxHeight < chunkY * Chunk.blockSize){
 
         }else if (chunkHeightMap.getMinHeight > (chunkY+1) * Chunk.blockSize) {
             for (i <- 0 until Chunk.blockSize*Chunk.blockSize*Chunk.blockSize) {
                 blockData(i) = Blocks.getIdByBlock(Blocks.stone).toShort
+                chunk.isEmpty = false
             }
 
         }else {
@@ -56,13 +57,16 @@ class ChunkGenerator(world: World) {
                 val height = chunkHeightMap.getHeight(x1, z1)
                 if (height-1 > y1 + (chunkY * Chunk.blockSize)) {
                     blockStorage.setBlock(x1, y1, z1, Blocks.stone)
+                    chunk.isEmpty = false
                 } else if (height == y1 + (chunkY * Chunk.blockSize)) {
                     blockStorage.setBlock(x1, y1, z1, Blocks.grass)
+                    chunk.isEmpty = false
                     if(trees( x1)(z1)==1){
                         createTree(x1,y1+1,z1,blockStorage)
                     }
                 }else if( height-1 == y1 + (chunkY * Chunk.blockSize)){
                     blockStorage.setBlock(x1, y1, z1, Blocks.dirt)
+                    chunk.isEmpty = false
                 }
             }
         }

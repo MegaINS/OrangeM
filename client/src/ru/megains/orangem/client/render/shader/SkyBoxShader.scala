@@ -4,7 +4,7 @@ import org.joml.Vector3f
 import ru.megains.mge.render.camera.Camera
 import ru.megains.mge.render.shader.Shader
 
-class SkyBoxShader extends Shader{
+private class SkyBoxShader extends Shader{
 
 
     override val dir: String = "shaders/skybox"

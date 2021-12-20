@@ -76,4 +76,9 @@ class BlockSetPositionRender {
             blockSet.render(shader)
         }
     }
+
+    def cleanUp(): Unit ={
+
+        blockSet.cleanUp()
+    }
 }

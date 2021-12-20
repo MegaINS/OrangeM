@@ -1,37 +1,37 @@
-package ru.megains.orangem.client.scene
+package ru.megains.orangem.client.render.gui.menu
 
 import ru.megains.mge.render.MContainer
-import ru.megains.mge.{Mouse, Scene, Window}
-import ru.megains.mge.render.camera.OrthographicCamera
-import ru.megains.mge.render.shader.Shader
 import ru.megains.mge.render.text.Label
-import ru.megains.orangem.client.network.ServerPinger
-import org.lwjgl.opengl.GL11._
-import ru.megains.orangem.client.OrangeMClient
+import ru.megains.orangem.client.OrangeM
 import ru.megains.orangem.client.network.{ServerData, ServerPinger}
+import ru.megains.orangem.client.render.gui.base.GuiScreen
 import ru.megains.orangem.client.render.gui.element.MButton
-import ru.megains.orangem.client.render.shader.GuiShader
+import ru.megains.orangem.client.scene.SceneGui
 
-class MultiPlayerScene(orangeM: OrangeMClient) extends BaseScene {
+class GuiMultiPlayer(orangeM: OrangeM, previousScreen:GuiScreen) extends GuiScreen {
 
+    val sceneGui:SceneGui = orangeM.scene.asInstanceOf[SceneGui]
     val server: ServerData = new ServerData("localhost", "localhost", true)
     val pinger = new ServerPinger(orangeM)
     var pingVal: Long = -1
 
     val pingText: Label = new Label(pingVal.toString)
-    val buttonPing: MButton = new MButton("Ping", 300, 50, () => {
+    val buttonPing: MButton = new MButton("Ping", 300, 40, _ => {
         ping()
     })
-    val buttonCancel: MButton = new MButton("Cancel", 300, 50, () => {
-        orangeM.setScene(new MainMenuScene(orangeM))
+    val buttonCancel: MButton = new MButton("Cancel", 300, 40, _ => {
+        sceneGui.setGuiScreen(previousScreen)
     })
-    val buttonConnect: MButton = new MButton("Connect", 300, 50, () => {
+    val buttonConnect: MButton = new MButton("Connect", 300, 40, _ => {
         connectToServer(server)
     })
-    addChildren(buttonPing, buttonCancel, buttonConnect, pingText)
+
+    override def init(): Unit = {
+        addChildren(buttonPing, buttonCancel, buttonConnect, pingText)
+    }
 
     def connectToServer(server: ServerData): Unit = {
-        orangeM.setScene(new ConnectingScene(this, orangeM, server))
+        sceneGui.setGuiScreen(new GuiConnecting(this, orangeM, server))
     }
 
     def ping(): Unit = {
@@ -66,4 +66,6 @@ class MultiPlayerScene(orangeM: OrangeMClient) extends BaseScene {
         buttonConnect.posY = height - 70
 
     }
+
+
 }

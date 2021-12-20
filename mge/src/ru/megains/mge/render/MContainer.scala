@@ -22,22 +22,30 @@ class MContainer extends MObject {
     def removeChildren(children:MObject*): Unit = {
         children.foreach(_children -= _)
     }
+    
+    def removeAllChildren(): Unit ={
+        _children.clear()
+    }
 
     override def update(): Unit = {
         _children.foreach(_.update())
     }
 
-    override def mousePress(x: Int, y: Int): Unit = {
-        _children.foreach(_.mousePress(x- posX.toInt,y - posY.toInt))
+    override def mousePress(x: Int, y: Int,button: Int): Unit = {
+        _children.foreach(c => if(c!= null) c.mousePress(x- posX.toInt,y - posY.toInt,button))
     }
 
-    override def mouseRelease(x:Int,y:Int):Unit= {
-        _children.foreach(_.mouseRelease(x- posX.toInt,y - posY.toInt))
+    override def mouseRelease(x:Int,y:Int,button: Int):Unit= {
+        _children.foreach(_.mouseRelease(x- posX.toInt,y - posY.toInt,button))
     }
 
     override def mouseMove(x: Int, y: Int): Unit = {
         _children.foreach(_.mouseMove(x- posX.toInt,y- posY.toInt))
 
+    }
+
+    override def resize(width: Int, height: Int): Unit = {
+        _children.foreach(_.resize(width,height))
     }
 
 }

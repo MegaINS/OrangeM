@@ -13,7 +13,7 @@ import ru.megains.mge.render.shader.Shader
 
 class Label(private var _text: String = "",private var _textStyle: TextStyle = TextStyle.default) extends MContainer {
 
-
+    def width: Float = Fonts.firaSans.getWidth(text)
 
     var textModel:Model = new Model()
     var shadowModel:Model = new Model(){
@@ -29,8 +29,8 @@ class Label(private var _text: String = "",private var _textStyle: TextStyle = T
     def text_=(text: String): Unit = {
         _text = text
 
-        textModel.mesh =(FontRender.createStringGui(text, Color.WHITE, Fonts.firaSans))
-        shadowModel.mesh = (FontRender.createStringGui(text, Color.BLACK, Fonts.firaSans))
+        textModel.mesh =FontRender.createStringGui(text, Color.WHITE, Fonts.firaSans)
+        shadowModel.mesh = FontRender.createStringGui(text, Color.BLACK, Fonts.firaSans)
     }
 
     override def render(shader: Shader): Unit = {

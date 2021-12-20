@@ -4,7 +4,7 @@ import org.lwjgl.opengl.GL11._
 import ru.megains.mge.render.mesh.{Mesh, MeshMaker}
 import ru.megains.mge.render.model.Model
 import ru.megains.mge.render.shader.Shader
-import ru.megains.orangem.client.scene.GameScene
+import ru.megains.orangem.client.scene.SceneGame
 import ru.megains.orangem.common.entity.player.EntityPlayer
 import ru.megains.orangem.common.physics.BoundingBox
 import ru.megains.orangem.common.world.World
@@ -12,7 +12,7 @@ import ru.megains.orangem.common.world.chunk.Chunk
 
 import java.awt.Color
 
-class ChunkBoundsRenderer(gameScene: GameScene) {
+class ChunkBoundsRenderer(gameScene: SceneGame) {
 
 
 
@@ -148,5 +148,7 @@ class ChunkBoundsRenderer(gameScene: GameScene) {
         chunkMesh = new Model(mm.make())
     }
 
-
+    def cleanUp(): Unit ={
+        chunkMesh.cleanUp()
+    }
 }

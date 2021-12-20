@@ -4,10 +4,11 @@ import ru.megains.orangem.common.utils.Logger
 import ru.megains.orangem.common.world.{IChunkProvider, World}
 import ru.megains.orangem.common.world.chunk.{Chunk, ChunkGenerator, ChunkVoid}
 
+import java.io.IOException
 import scala.collection.mutable
 
 
-class ChunkProvider(world: World/*,chunkLoader:ChunkLoader */)  extends IChunkProvider with Logger[ChunkProvider]{
+class ChunkProvider(world: World,chunkLoader:ChunkLoader )  extends IChunkProvider with Logger[ChunkProvider]{
     ChunkProvider.voidChunk = ChunkVoid
     val voidChunk: ChunkVoid.type = ChunkVoid
     val chunkMap = new mutable.HashMap[Long,Chunk]()
@@ -36,7 +37,7 @@ class ChunkProvider(world: World/*,chunkLoader:ChunkLoader */)  extends IChunkPr
     def loadChunk(chunkX: Int, chunkY: Int, chunkZ: Int): Chunk = {
         var chunk: Chunk = getLoadedChunk(chunkX, chunkY, chunkZ)
         if (chunk == null) {
-           // chunk =  chunkLoader.loadChunk(world, chunkX, chunkY, chunkZ)
+            chunk =  chunkLoader.loadChunk(world, chunkX, chunkY, chunkZ)
             if (chunk != null) {
                 chunkMap += Chunk.getIndex(chunkX, chunkY, chunkZ) -> chunk
             }
@@ -54,23 +55,23 @@ class ChunkProvider(world: World/*,chunkLoader:ChunkLoader */)  extends IChunkPr
         chunkMap.values.foreach(
             chunk => {
 
-               // saveChunkData(chunk)
+                saveChunkData(chunk)
 
             }
         )
-      //  chunkLoader.regionLoader.close()
+        chunkLoader.regionLoader.close()
         true
     }
-//    def saveChunkData(chunkIn: Chunk) {
-//      //  try
-//           // chunkLoader.saveChunk(chunkIn)
-//
-//        catch {
-//            case ioexception: IOException => {
-//                log.error("Couldn\'t save chunk", ioexception.asInstanceOf[Throwable])
-//            }
-//        }
-//    }
+    def saveChunkData(chunkIn: Chunk): Unit = {
+        try {
+           chunkLoader.saveChunk(chunkIn)
+        }
+        catch {
+            case ioexception: IOException => {
+                log.error("Couldn\'t save chunk", ioexception.asInstanceOf[Throwable])
+            }
+        }
+    }
 
     /*override*/ def unload(chunk: Chunk): Unit = {
 

@@ -4,53 +4,59 @@ import org.lwjgl.glfw.GLFW.GLFW_PRESS
 import org.lwjgl.opengl.GL11._
 import ru.megains.mge.render.camera.OrthographicCamera
 import ru.megains.mge.render.shader.Shader
-import ru.megains.mge.{Mouse, Window}
+import ru.megains.mge.{Mouse, Scene, Window}
 import ru.megains.orangem.client.render.gui.{GuiBlockSelect, GuiDebugInfo, GuiHotBar, GuiPlayerInventory, GuiTarget}
-import ru.megains.orangem.client.render.gui.base.{GuiGame, GuiOverlay, GuiUI}
-import ru.megains.orangem.client.render.shader.GuiShader
-import ru.megains.orangem.client.scene.GameScene
+import ru.megains.orangem.client.render.gui.base.{GuiOverlay, GuiScreen, GuiUI}
+import ru.megains.orangem.client.render.shader.{GuiShader, ShaderManager}
+import ru.megains.orangem.client.scene.SceneGame
 import ru.megains.orangem.client.render.gui.base.GuiUI
 import ru.megains.orangem.client.render.gui._
+import ru.megains.orangem.client.render.gui.menu.GuiGameSettings
 
 import scala.collection.mutable
 
-class GuiRenderer(gameScene: GameScene) {
+class RendererGui(gameScene: SceneGame) {
 
 
     val Z_FAR: Float = 100
-    var shader: Shader = new GuiShader()
+    var shader: Shader = ShaderManager.guiShader
     var camera: OrthographicCamera = new OrthographicCamera(0, Window.width, Window.height, 0, -100, Z_FAR)
 
     val guiUIMap: mutable.HashMap[String, GuiUI] = new mutable.HashMap[String, GuiUI]()
     val guiOverlayMap: mutable.HashMap[String, GuiOverlay] = new mutable.HashMap[String, GuiOverlay]()
-    val guiPlayerInventory: GuiPlayerInventory = new GuiPlayerInventory(gameScene.player)
+    val guiPlayerInventory: GuiPlayerInventory = new GuiPlayerInventory(gameScene.player,gameScene)
 
-    private var openGui: GuiGame = _
+    private var openGui: GuiScreen = _
 
     def init(): Unit = {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-        shader.create()
-
         addGuiUI("guiDebugInfo", new GuiDebugInfo())
         addGuiUI("guiBlockSelect", new GuiBlockSelect())
         addGuiUI("guiHotBar", new GuiHotBar())
         addGuiUI("guiTarget", new GuiTarget())
-
-
-        guiPlayerInventory.init(gameScene)
+        guiPlayerInventory.init(gameScene.game)
     }
 
     def update(): Unit = {
 
         if (openGui == null) {
-            guiUIMap.values.foreach(_.update())
+            guiUIMap.values.foreach(g=> {
+                g.update()
+                g.mouseMove(Mouse.x.toInt,Mouse.y.toInt)
+            })
         } else {
-            guiUIMap.values.foreach(_.update())
+            guiUIMap.values.foreach(g=> {
+                g.update()
+                g.mouseMove(Mouse.x.toInt,Mouse.y.toInt)
+            })
             openGui.update()
-            guiOverlayMap.values.foreach(_.update())
+            openGui.mouseMove(Mouse.x.toInt,Mouse.y.toInt)
+            guiOverlayMap.values.foreach(g=> {
+                g.update()
+                g.mouseMove(Mouse.x.toInt,Mouse.y.toInt)
+            })
         }
     }
-
 
     def render(): Unit = {
 
@@ -60,7 +66,7 @@ class GuiRenderer(gameScene: GameScene) {
         glEnable(GL_CULL_FACE)
         glDisable(GL_DEPTH_TEST)
         camera.setOrtho(0, Window.width, Window.height, 0, -100, Z_FAR)
-        shader.bind()
+        ShaderManager.bindShader(shader)
         shader.setUniform(camera)
 
         if (openGui == null) {
@@ -69,8 +75,7 @@ class GuiRenderer(gameScene: GameScene) {
             openGui.render(shader)
             guiOverlayMap.values.foreach(_.render(shader))
         }
-
-        shader.unbind()
+        ShaderManager.unbindShader()
 
         glDisable(GL_BLEND)
         glDisable(GL_CULL_FACE)
@@ -83,8 +88,11 @@ class GuiRenderer(gameScene: GameScene) {
         if (openGui != null) openGui.resize(width,height)
     }
 
-    def openGui(guiGame: GuiGame): Unit = {
+    def openGui(guiGame: GuiScreen): Unit = {
+        guiGame.init(gameScene.game)
+        guiGame.resize(Window.width,Window.height)
         openGui = guiGame
+
         Mouse.setGrabbed(false)
     }
 
@@ -93,7 +101,7 @@ class GuiRenderer(gameScene: GameScene) {
     }
 
     def addGuiUI(name: String, guiUI: GuiUI): Unit = {
-        guiUI.init(gameScene)
+        guiUI.init(gameScene.game)
         guiUIMap += name -> guiUI
     }
 
@@ -106,12 +114,10 @@ class GuiRenderer(gameScene: GameScene) {
     def runTickMouse(button: Int, action: Int, mods: Int): Unit = {
         val x = Mouse.getX
         val y = Mouse.getY
-        if (button == -1) {
-            openGui.mouseClickMove(x, y)
-        } else if (action == GLFW_PRESS) {
-            openGui.mouseClicked(x, y, button, gameScene.player)
+       if (action == GLFW_PRESS) {
+            openGui.mousePress(x, y, button)
         } else {
-            openGui.mouseReleased(x, y, button)
+            openGui.mouseRelease(x, y, button)
         }
 
     }
@@ -122,4 +128,13 @@ class GuiRenderer(gameScene: GameScene) {
     }
 
     def isOpenGui: Boolean = openGui != null
+
+    def cleanUp(): Unit ={
+      // guiUIMap.values.foreach(_.cleanUp())
+      //  guiOverlayMap.values.foreach(_.cleanUp())
+      //  guiPlayerInventory.cleanUp()
+
+    }
+
+
 }

@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11.glClearColor
 import org.lwjgl.opengl.{GL, GL11}
 import org.lwjgl.system.MemoryUtil.NULL
 import org.lwjgl.opengl.GL11._
+import org.lwjgl.system.MemoryStack.stackPush
 
 class Window(var width:Int, var height:Int, title:String) {
 
@@ -23,29 +24,28 @@ class Window(var width:Int, var height:Int, title:String) {
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE)
 
         if (id == NULL) throw new RuntimeException("Failed to create the GLFW window")
-        glfwSetKeyCallback(id, (window, key, scancode, action, mods) => {
-            if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
-                glfwSetWindowShouldClose(window, true)
-        })
-//
-//        try {
-//            val stack = stackPush
-//            try {
-//                val pWidth = stack.mallocInt(1)
-//                val pHeight = stack.mallocInt(1)
-//                glfwGetWindowSize(id, pWidth, pHeight)
-//                val vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor)
-//                glfwSetWindowPos(id, (vidmode.width - pWidth.get(0)) / 2, (vidmode.height - pHeight.get(0)) / 2)
-//                if (stack != null) stack.close()
-//            }catch {
-//                case e: Throwable => e.printStackTrace()
-//            }
-//        }catch {
-//            case e: Throwable => e.printStackTrace()
-//        }
+//        glfwSetKeyCallback(id, (window, key, scancode, action, mods) => {
+//            if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
+//                glfwSetWindowShouldClose(window, true)
+//        })
+
+        try {
+            val stack = stackPush
+            try {
+                val pWidth = stack.mallocInt(1)
+                val pHeight = stack.mallocInt(1)
+                glfwGetWindowSize(id, pWidth, pHeight)
+                val vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor)
+                glfwSetWindowPos(id, (vidmode.width - pWidth.get(0)) / 2, (vidmode.height - pHeight.get(0)) / 2)
+                if (stack != null) stack.close()
+            }catch {
+                case e: Throwable => e.printStackTrace()
+            }
+        }catch {
+            case e: Throwable => e.printStackTrace()
+        }
 
         glfwMakeContextCurrent(id)
-        glfwSwapInterval(0)
         glfwShowWindow(id)
         GL.createCapabilities
         GL11.glViewport(0, 0, width, height)
@@ -60,6 +60,9 @@ class Window(var width:Int, var height:Int, title:String) {
         setSwapInterval(1)
         //glfwWindowHint(GLFW_DEPTH_BITS, 32)
     }
+
+
+
 
     def update(): Unit ={
         glfwSwapBuffers(id)

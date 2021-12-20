@@ -1,11 +1,18 @@
 package ru.megains.orangem.client.render.gui.element
 
-abstract class GuiElement() /*extends Gui */{
+import ru.megains.orangem.client.render.gui.base.Gui
 
-    var posX:Int = 0
-    var posY:Int= 0
+abstract class GuiElement() extends Gui {
 
+    val width: Int = 0
+    val height: Int = 0
 
+   // var posX:Int = 0
+    //var posY:Int= 0
+
+    def isMouseOver(mouseX: Int, mouseY: Int): Boolean = {
+        mouseX >= posX && mouseX <= posX + width && mouseY >= posY && mouseY <= posY + height
+    }
 
  //   def this(tar: Tartess) {
 //        this()
