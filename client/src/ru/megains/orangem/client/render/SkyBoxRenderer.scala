@@ -27,12 +27,12 @@ class SkyBoxRenderer {
         val mm = MeshMaker.startMakeTriangles()
         mm.setTexture(skyboxTexture)
 
-         RenderBlock.renderSideUp(mm,0,100,100,0,100,skyboxTexture)
+       //  RenderBlock.renderSideUp(mm,0,100,100,0,100,skyboxTexture)
 
         var minU = 0.25f
         var maxU = 0.5f
-        var minV = 0f
-        var maxV = 1f/3f
+        var minV = 2f/3f
+        var maxV = 1f
 
         //  //mm.addNormals(0, 1, 0)
         mm.setCurrentIndex()
@@ -46,8 +46,8 @@ class SkyBoxRenderer {
 
         minU = 0f
         maxU = 0.25f
-        minV = 1f/3f
-        maxV = 2f/3f
+        minV = 2f/3f
+        maxV = 1f/3f
 
         ////mm.addNormals(-1, 0, 0)
         mm.setCurrentIndex()
@@ -101,8 +101,8 @@ class SkyBoxRenderer {
 
         minU = 0.25f
         maxU = 0.5f
-        minV = 2f/3f
-        maxV = 3f/3f
+        minV = 0f
+        maxV = 1f/3f
         // //mm.addNormals(0, -1, 0)
         mm.setCurrentIndex()
 

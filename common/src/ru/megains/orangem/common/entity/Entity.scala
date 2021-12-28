@@ -16,6 +16,10 @@ abstract class Entity(val height: Float,val wight: Float,val levelView: Float) {
     var rotYaw:Float = 0
     var rotPitch:Float = 0
 
+    var moveStrafing = .0f
+    var moveForward = .0f
+    var isJumping = false
+
     var motionX = 0f
     var motionY = 0f
     var motionZ = 0f
@@ -78,11 +82,13 @@ abstract class Entity(val height: Float,val wight: Float,val levelView: Float) {
         if (dist > 0.0f) {
             val dX: Float = x / dist * speed * limit
             val dZ: Float = z / dist * speed * limit
-            val sinYaw: Float = Math.sin(rotYaw.toRadians).toFloat
             val cosYaw: Float = Math.cos(rotYaw.toRadians).toFloat
+            val sinYaw: Float = Math.sin(rotYaw.toRadians).toFloat
 
-            motionX += (dX * cosYaw - dZ * sinYaw)
-            motionZ += (dZ * cosYaw + dX * sinYaw)
+
+            motionZ  -= (dX * cosYaw - dZ * sinYaw)
+            motionX  += (dX * sinYaw + dZ * cosYaw)
+
         }
 
     }

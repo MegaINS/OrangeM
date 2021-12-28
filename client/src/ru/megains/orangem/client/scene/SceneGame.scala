@@ -55,8 +55,8 @@ class SceneGame(val game:OrangeM,saveHandler: AnvilSaveHandler) extends Scene wi
         FrameCounter.gameUpdate()
         if(!guiRenderer.isOpenGui){
             moved.zero()
-            if (glfwGetKey(game.window.id, GLFW_KEY_W) == GLFW_PRESS) moved.add(0,0,-1)
-            if (glfwGetKey(game.window.id, GLFW_KEY_S) == GLFW_PRESS) moved.add(0,0,1)
+            if (glfwGetKey(game.window.id, GLFW_KEY_W) == GLFW_PRESS) moved.add(0,0,1)
+            if (glfwGetKey(game.window.id, GLFW_KEY_S) == GLFW_PRESS) moved.add(0,0,-1)
             if (glfwGetKey(game.window.id, GLFW_KEY_A) == GLFW_PRESS) moved.add(-1,0,0)
             if (glfwGetKey(game.window.id, GLFW_KEY_D) == GLFW_PRESS) moved.add(1,0,0)
             if (glfwGetKey(game.window.id, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) moved.add(0,-1,0)
@@ -66,7 +66,11 @@ class SceneGame(val game:OrangeM,saveHandler: AnvilSaveHandler) extends Scene wi
 
             player.turn(Mouse.getDY.toFloat, Mouse.getDX.toFloat)
 
-            player.update(moved.x,moved.y,moved.z)
+
+            player.moveForward = moved.z
+            player.moveStrafing = moved.x
+            player.isJumping = moved.y == 1
+            player.update(moved.y)
 
 
             rayTrace = player.rayTrace(5)

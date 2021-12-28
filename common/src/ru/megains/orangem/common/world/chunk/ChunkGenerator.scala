@@ -29,16 +29,16 @@ class ChunkGenerator(world: World) {
 
         val chunkHeightMap: ChunkHeightMap = world.heightMap.getChunkHeightMap(chunkX, chunkZ)
 
-        val trees: Array[Array[Int]] = new Array[Array[Int]](Chunk.blockSize)
-        for (i <- 0 until  Chunk.blockSize) {
-            trees(i) = new Array[Int](Chunk.blockSize)
-        }
+//        val trees: Array[Array[Int]] = new Array[Array[Int]](Chunk.blockSize)
+//        for (i <- 0 until  Chunk.blockSize) {
+//            trees(i) = new Array[Int](Chunk.blockSize)
+//        }
 
-        for(x<-chunk.pos.blockPosX until chunk.pos.blockPosX+ Chunk.blockSize;
-            z<-chunk.pos.blockPosZ until  chunk.pos.blockPosZ+Chunk.blockSize){
-            val height =  generateHeight(x, z)
-            trees(x-chunk.pos.blockPosX)(z-chunk.pos.blockPosZ) = if(height>46) 1 else 0
-        }
+//        for(x<-chunk.pos.blockPosX until chunk.pos.blockPosX+ Chunk.blockSize;
+//            z<-chunk.pos.blockPosZ until  chunk.pos.blockPosZ+Chunk.blockSize){
+//            val height =  generateHeight(x, z)
+//            trees(x-chunk.pos.blockPosX)(z-chunk.pos.blockPosZ) = if(height>46) 1 else 0
+//        }
 
 
 
@@ -52,24 +52,24 @@ class ChunkGenerator(world: World) {
                 chunk.isEmpty = false
             }
 
-        }else {
-            for (x1 <- 0 until  Chunk.blockSize; y1 <- 0 until  Chunk.blockSize; z1 <- 0 until  Chunk.blockSize) {
-                val height = chunkHeightMap.getHeight(x1, z1)
-                if (height-1 > y1 + (chunkY * Chunk.blockSize)) {
-                    blockStorage.setBlock(x1, y1, z1, Blocks.stone)
-                    chunk.isEmpty = false
-                } else if (height == y1 + (chunkY * Chunk.blockSize)) {
-                    blockStorage.setBlock(x1, y1, z1, Blocks.grass)
-                    chunk.isEmpty = false
-                    if(trees( x1)(z1)==1){
-                        createTree(x1,y1+1,z1,blockStorage)
-                    }
-                }else if( height-1 == y1 + (chunkY * Chunk.blockSize)){
-                    blockStorage.setBlock(x1, y1, z1, Blocks.dirt)
-                    chunk.isEmpty = false
-                }
-            }
-        }
+        }//else {
+//            for (x1 <- 0 until  Chunk.blockSize; y1 <- 0 until  Chunk.blockSize; z1 <- 0 until  Chunk.blockSize) {
+//                val height = chunkHeightMap.getHeight(x1, z1)
+//                if (height-1 > y1 + (chunkY * Chunk.blockSize)) {
+//                    blockStorage.setBlock(x1, y1, z1, Blocks.stone)
+//                    chunk.isEmpty = false
+//                } else if (height == y1 + (chunkY * Chunk.blockSize)) {
+//                    blockStorage.setBlock(x1, y1, z1, Blocks.grass)
+//                    chunk.isEmpty = false
+//                    if(trees( x1)(z1)==1){
+//                        createTree(x1,y1+1,z1,blockStorage)
+//                    }
+//                }else if( height-1 == y1 + (chunkY * Chunk.blockSize)){
+//                    blockStorage.setBlock(x1, y1, z1, Blocks.dirt)
+//                    chunk.isEmpty = false
+//                }
+//            }
+//        }
 //    var min: Double = Double.MaxValue
 //        var max: Double = Double.MinValue
 //            //if(chunkY == 0 ||chunkY == 1|| chunkY == -1 ) {

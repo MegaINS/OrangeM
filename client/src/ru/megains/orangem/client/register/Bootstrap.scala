@@ -6,7 +6,7 @@ import ru.megains.orangem.client.render.block.{RenderBlockGlass, RenderBlockGras
 import ru.megains.orangem.client.render.entity.RenderEntityCube
 import ru.megains.orangem.client.utils.Logger
 import ru.megains.orangem.common.entity.item.EntityItem
-import ru.megains.orangem.common.entity.mob.EntityCube
+import ru.megains.orangem.common.entity.mob.EntityBot
 import ru.megains.orangem.common.item.{ItemMass, ItemPack, ItemSingle}
 import ru.megains.orangem.common.register.TGameRegister
 import ru.megains.orangem.common.register.{Bootstrap => BootstrapCommon}
@@ -58,6 +58,6 @@ object Bootstrap extends Logger[OrangeM] {
     def initEntity(): Unit = {
         BootstrapCommon.initEntity(GameRegisterRender)
 
-        GameRegisterRender.registerEntityRender(classOf[EntityCube], RenderEntityCube)
+        GameRegisterRender.registerEntityRender(classOf[EntityBot], RenderEntityCube)
     }
 }

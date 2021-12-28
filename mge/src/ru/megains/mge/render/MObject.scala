@@ -1,7 +1,7 @@
 package ru.megains.mge
 package render
 
-import org.joml.Matrix4f
+import org.joml.{Matrix4f, Vector3f}
 import ru.megains.mge.render.shader.Shader
 
 abstract class MObject {
@@ -19,10 +19,18 @@ abstract class MObject {
     var yRot: Float = 0.0F
     var zRot: Float = 0.0F
 
+
+    val rotationPoint:Vector3f = new Vector3f()
+
     def buildMatrix(): Matrix4f = {
         matrix.identity
+       // matrix.translate(rotationPoint)
         matrix.translate(posX, posY, posZ)
+        matrix.translate(rotationPoint.x,rotationPoint.y,rotationPoint.z)
         matrix.rotateXYZ(Math.toRadians(xRot).toFloat, Math.toRadians(yRot).toFloat, Math.toRadians(zRot).toFloat)
+        matrix.translate(-rotationPoint.x,-rotationPoint.y,-rotationPoint.z)
+
+        //matrix.translate(rotationPoint)
         matrix.scale(scale)
 
         parent match {

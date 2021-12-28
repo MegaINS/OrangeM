@@ -48,9 +48,9 @@ class WorldRenderer(gameScene: SceneGame) {
         chunks.foreach(_.render(BlockType.GLASS.id, shader))
         // glDisable(GL_DEPTH_TEST)
         // glDisable(GL_CULL_FACE)
-        glLineWidth(2f)
+       // glLineWidth(2f)
         renderEntities(shader: Shader)
-        glLineWidth(0.5f)
+       // glLineWidth(0.5f)
     }
 
 
@@ -62,38 +62,38 @@ class WorldRenderer(gameScene: SceneGame) {
         val flag = playerRenderChunks.exists(_.isVoid)
 
 
-//        if (posX != lastX ||
-//                posY != lastY ||
-//                posZ != lastZ ||
-//                playerRenderChunks.isEmpty ||
-//                flag) {
-//            lastX = posX
-//            lastY = posY
-//            lastZ = posZ
-//
-//
-//            val renderW = gameScene.settings.RENDER_DISTANCE_WIDTH
-//            val renderH = gameScene.settings.RENDER_DISTANCE_HEIGHT
-//            val R = renderW * renderW
-//
-//            val futures = (posX - renderW to posX + renderW).map(
-//                x1 =>
-//                    //  Future {
-//                    (posY - renderH to posY + renderH).flatMap(y1 =>
-//                        (posZ - renderW to posZ + renderW).map(
-//                            (x1, y1, _)
-//                        )
-//                                .filter(a => ((a._1 - posX) * (a._1 - posX) + (a._3 - posZ) * (a._3 - posZ) <= R))
-//                                .map(a => getRenderChunk(a._1, a._2, a._3))
-//                    )
-//                //}
-//            )
-//
-//            playerRenderChunks = futures.flatten.sortBy((c) => Math.abs(posY - c.yPos) + (Math.abs(posX - c.xPos) + Math.abs(posZ - c.zPos)) / 10)
-//        }
+        if (posX != lastX ||
+                posY != lastY ||
+                posZ != lastZ ||
+                playerRenderChunks.isEmpty ||
+                flag) {
+            lastX = posX
+            lastY = posY
+            lastZ = posZ
 
-        Seq(getRenderChunk(0,0,0))
-       // playerRenderChunks//.filter(chunk => Frustum.cubeInFrustum(chunk.xPos, chunk.yPos, chunk.zPos, chunk.xPos + Chunk.blockSize, chunk.yPos + Chunk.blockSize, chunk.zPos + Chunk.blockSize))
+
+            val renderW = gameScene.settings.RENDER_DISTANCE_WIDTH
+            val renderH = gameScene.settings.RENDER_DISTANCE_HEIGHT
+            val R = renderW * renderW
+
+            val futures = (posX - renderW to posX + renderW).map(
+                x1 =>
+                    //  Future {
+                    (posY - renderH to posY + renderH).flatMap(y1 =>
+                        (posZ - renderW to posZ + renderW).map(
+                            (x1, y1, _)
+                        )
+                                .filter(a => ((a._1 - posX) * (a._1 - posX) + (a._3 - posZ) * (a._3 - posZ) <= R))
+                                .map(a => getRenderChunk(a._1, a._2, a._3))
+                    )
+                //}
+            )
+
+            playerRenderChunks = futures.flatten.sortBy((c) => Math.abs(posY - c.yPos) + (Math.abs(posX - c.xPos) + Math.abs(posZ - c.zPos)) / 10)
+        }
+
+       // Seq(getRenderChunk(0,0,0))
+        playerRenderChunks//.filter(chunk => Frustum.cubeInFrustum(chunk.xPos, chunk.yPos, chunk.zPos, chunk.xPos + Chunk.blockSize, chunk.yPos + Chunk.blockSize, chunk.zPos + Chunk.blockSize))
     }
 
     def getRenderChunk(x: Int, y: Int, z: Int): ChunkRenderer = {

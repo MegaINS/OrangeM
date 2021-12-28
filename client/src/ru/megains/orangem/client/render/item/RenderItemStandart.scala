@@ -4,7 +4,7 @@ import ru.megains.mge.render.mesh.{Mesh, MeshMaker}
 import ru.megains.mge.render.model.Model
 import ru.megains.mge.render.shader.Shader
 import ru.megains.mge.render.texture.TTexture
-import ru.megains.orangem.client.render.TTextureRegister
+import ru.megains.orangem.client.render.api.TTextureRegister
 import ru.megains.orangem.client.render.texture.GameTextureManager
 import ru.megains.orangem.common.item.Item
 

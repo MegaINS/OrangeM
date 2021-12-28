@@ -2,7 +2,7 @@ package ru.megains.orangem.client.render.block
 
 import ru.megains.mge.render.texture.TTexture
 import ru.megains.orangem.common.block.data.BlockState
-import ru.megains.orangem.client.render.TTextureRegister
+import ru.megains.orangem.client.render.api.TTextureRegister
 import ru.megains.orangem.common.utils.Direction
 import ru.megains.orangem.common.world.World
 

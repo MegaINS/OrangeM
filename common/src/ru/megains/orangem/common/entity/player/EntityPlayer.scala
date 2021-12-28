@@ -30,18 +30,18 @@ class EntityPlayer(val name:String) extends Entity(1.8f, 0.6f, 1.6f) {
     //    }
 
 
-    def update(x: Float, y: Float, z: Float): Unit = {
+    def update(y: Float): Unit = {
 
 
         if (gameType.isCreative) {
             motionY += y * 0.15f
         } else {
-            if (y > 0 && onGround) {
+            if (isJumping && onGround) {
                 motionY = speedJump
             }
         }
 
-        calculateMotion(x, z, if (onGround || gameType.isCreative) 0.04f else 0.02f)
+        calculateMotion(moveForward, moveStrafing, if (onGround || gameType.isCreative) 0.04f else 0.02f)
 
         move(motionX, motionY, motionZ)
 

@@ -2,7 +2,7 @@ package ru.megains.orangem.common.register
 
 import ru.megains.orangem.common.block.{Block, BlockAir, BlockGlass, BlockLeaves, BlockTest}
 import ru.megains.orangem.common.entity.item.EntityItem
-import ru.megains.orangem.common.entity.mob.EntityCube
+import ru.megains.orangem.common.entity.mob.EntityBot
 import ru.megains.orangem.common.item.{ItemMass, ItemPack, ItemSingle}
 import ru.megains.orangem.common.utils.Logger
 
@@ -57,7 +57,7 @@ object Bootstrap extends Logger[Bootstrap] {
 
     def initEntity(gameRegister: TGameRegister): Unit = {
         gameRegister.registerEntity(0, classOf[EntityItem])
-        gameRegister.registerEntity(1, classOf[EntityCube])
+        gameRegister.registerEntity(1, classOf[EntityBot])
 
 
     }

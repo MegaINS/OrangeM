@@ -3,7 +3,7 @@ package ru.megains.mge.render.texture
 import org.lwjgl.opengl.GL11
 
 
-abstract class TTexture(data:TextureData) {
+abstract class TTexture(val data:TextureData) {
 
     protected var glTextureId: Int = -1
 

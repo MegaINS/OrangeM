@@ -4,7 +4,7 @@ import org.lwjgl.glfw.GLFW._
 import ru.megains.mge.Mouse
 import ru.megains.orangem.client.render.gui.GuiInGameMenu
 import ru.megains.orangem.client.scene.SceneGame
-import ru.megains.orangem.common.entity.mob.EntityCube
+import ru.megains.orangem.common.entity.mob.EntityBot
 import ru.megains.orangem.common.entity.player.GameType
 import ru.megains.orangem.common.utils.RayTraceType
 
@@ -29,7 +29,7 @@ class PlayerController(val gameScene: SceneGame) {
                 case GLFW_KEY_F5 => gameScene.gameRenderer.chunkBoundsRenderer.isActive = !gameScene.gameRenderer.chunkBoundsRenderer.isActive
 
                 case GLFW_KEY_U =>
-                    val entityCube = new EntityCube()
+                    val entityCube = new EntityBot()
                     entityCube.setPosition(gameScene.player.posX + Random.nextInt(50) - 25, gameScene.player.posY + Random.nextInt(50), gameScene.player.posZ + Random.nextInt(50) - 25)
                     gameScene.world.spawnEntityInWorld(entityCube)
                 //case GLFW_KEY_L => renderer.isLight = !renderer.isLight

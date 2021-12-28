@@ -7,7 +7,7 @@ import ru.megains.mge.render.texture.TTexture
 import ru.megains.orangem.common.block.data.BlockState
 import ru.megains.orangem.common.block.{Block, BlockAir}
 import ru.megains.orangem.client.register.GameRegisterRender
-import ru.megains.orangem.client.render.TTextureRegister
+import ru.megains.orangem.client.render.api.TTextureRegister
 import ru.megains.orangem.client.render.texture.GameTextureManager
 import ru.megains.orangem.common.item.ItemBlock
 

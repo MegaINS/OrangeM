@@ -4,7 +4,7 @@ package render.texture
 import org.lwjgl.opengl.GL11._
 import org.lwjgl.opengl.GL30.glGenerateMipmap
 import org.lwjgl.opengl.GL11.glPixelStorei
-import org.lwjgl.stb.STBImage.stbi_image_free
+import org.lwjgl.stb.STBImage.{stbi_image_free, stbi_set_flip_vertically_on_load}
 import org.lwjgl.stb.STBImageResize._
 import org.lwjgl.system.MemoryUtil.{memAlloc, memFree}
 import ru.megains.mge.File
@@ -44,6 +44,7 @@ class TextureAtlas(data: TextureData) extends TTexture(data) {
             glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA)
             format = GL_RGBA
         }
+
         glTexSubImage2D(GL_TEXTURE_2D, 0, startX, startY, width, height, format, GL_UNSIGNED_BYTE, data.image)
         var input_pixels = data.image
         var input_w = width

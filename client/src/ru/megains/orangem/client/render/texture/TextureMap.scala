@@ -7,9 +7,10 @@ import org.lwjgl.opengl.GL11._
 import scala.collection.immutable.HashMap
 import org.lwjgl.opengl.GL30._
 import ru.megains.orangem.client.register.GameRegisterRender
-import ru.megains.orangem.client.render.TTextureRegister
+import ru.megains.orangem.client.render.api.{TRenderTexture, TTextureRegister}
 
-class TextureMap(name:String) extends TTexture(new TextureData()) with TTextureRegister{
+
+class TextureMap(val name:String) extends TTexture(new TextureData()) with TTextureRegister{
 
     var list: List[TextureAtlas] =  _
     var map:Array[Array[Boolean]] = _
@@ -17,16 +18,14 @@ class TextureMap(name:String) extends TTexture(new TextureData()) with TTextureR
     val missingTexture = new TextureAtlas("textures/missing.png")
 
 
-    registerTexture()
-    loadTextureAtlas()
 
 
 
-    def registerTexture(): Unit = {
+
+    def registerTexture(list:List[TRenderTexture]): Unit = {
 
         textureBlockMap += "missing" -> missingTexture
-        GameRegisterRender.blockData.idRender.values.foreach(_.registerTexture(this))
-        GameRegisterRender.itemData.idRender.values.foreach(_.registerTexture(this))
+        list.foreach(_.registerTexture(this))
     }
 
     def loadTextureAtlas(): Unit ={
