@@ -21,11 +21,11 @@ abstract class GuiContainer(val inventorySlots: Container,gameScene: SceneGame) 
     var stack:ItemStack = _
     var itemStackRender:GuiItemStack =_
     def init(): Unit = {
-
         addChildren(rect)
         for(slot <- inventorySlots.inventorySlots){
             addChildren( new GuiSlot(slot))
         }
+
     }
 
     override def update(): Unit = {

@@ -7,17 +7,16 @@ import ru.megains.mge.render.texture.TTexture
 
 class MSprite() extends Model {
 
-   var  _texture: TTexture = _
+    var _texture: TTexture = _
 
 
-    def this(texture: TTexture,x:Int = 0,y:Int= 0)={
+    def this(texture: TTexture, x: Int = 0, y: Int = 0) = {
         this()
         _texture = texture
 
 
-
-        val maxX = if(x>0)x else texture.width
-        val maxY = if(y>0)y else texture.height
+        val maxX = if (x > 0) x else texture.width
+        val maxY = if (y > 0) y else texture.height
         val minX = 0
         val minY = 0
         val zZero = 0.0f
@@ -38,10 +37,10 @@ class MSprite() extends Model {
         maxV = texture.maxV
 
         mm.setCurrentIndex()
-        mm.addVertexWithUV(minX, minY, zZero, minU,minV )
-        mm.addVertexWithUV(minX, maxY, zZero, minU, maxV)
-        mm.addVertexWithUV(maxX, maxY, zZero, maxU, maxV)
-        mm.addVertexWithUV(maxX, minY, zZero, maxU, minV)
+        mm.addVertexWithUV(minX, minY, zZero, minU, maxV)
+        mm.addVertexWithUV(minX, maxY, zZero, minU, minV)
+        mm.addVertexWithUV(maxX, maxY, zZero, maxU, minV)
+        mm.addVertexWithUV(maxX, minY, zZero, maxU, maxV)
         mm.addIndex(0, 1, 2)
         mm.addIndex(0, 2, 3)
 

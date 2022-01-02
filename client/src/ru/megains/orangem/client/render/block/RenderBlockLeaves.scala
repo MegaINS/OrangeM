@@ -19,29 +19,29 @@ class RenderBlockLeaves(name:String) extends RenderBlockStandard(name) {
 
         
 
-        RenderBlock.renderSideWest(mm, box.maxX, box.minY, box.maxY, box.minZ, box.maxZ, getATexture(blockState, Direction.WEST, world),color)
-        RenderBlock.renderSideWest(mm, box.minX, box.minY, box.maxY, box.minZ, box.maxZ, getATexture(blockState, Direction.WEST, world),color)
+        RenderBlock.renderSideWest(mm, box.maxX, box.minY, box.maxY, box.minZ, box.maxZ, getTexture(blockState, Direction.WEST, world),color)
+        RenderBlock.renderSideWest(mm, box.minX, box.minY, box.maxY, box.minZ, box.maxZ, getTexture(blockState, Direction.WEST, world),color)
 
 
 
-        RenderBlock.renderSideEast(mm, box.minX, box.minY, box.maxY, box.minZ, box.maxZ, getATexture(blockState, Direction.EAST, world),color)
-        RenderBlock.renderSideEast(mm, box.maxX, box.minY, box.maxY, box.minZ, box.maxZ, getATexture(blockState, Direction.EAST, world),color)
+        RenderBlock.renderSideEast(mm, box.minX, box.minY, box.maxY, box.minZ, box.maxZ, getTexture(blockState, Direction.EAST, world),color)
+        RenderBlock.renderSideEast(mm, box.maxX, box.minY, box.maxY, box.minZ, box.maxZ, getTexture(blockState, Direction.EAST, world),color)
 
 
-        RenderBlock.renderSideNorth(mm, box.minX, box.maxX, box.minY, box.maxY, box.maxZ, getATexture(blockState, Direction.NORTH, world),color)
-        RenderBlock.renderSideNorth(mm, box.minX, box.maxX, box.minY, box.maxY, box.minZ, getATexture(blockState, Direction.NORTH, world),color)
+        RenderBlock.renderSideNorth(mm, box.minX, box.maxX, box.minY, box.maxY, box.maxZ, getTexture(blockState, Direction.NORTH, world),color)
+        RenderBlock.renderSideNorth(mm, box.minX, box.maxX, box.minY, box.maxY, box.minZ, getTexture(blockState, Direction.NORTH, world),color)
 
 
-        RenderBlock.renderSideSouth(mm, box.minX, box.maxX, box.minY, box.maxY, box.minZ, getATexture(blockState, Direction.SOUTH, world),color)
-        RenderBlock.renderSideSouth(mm, box.minX, box.maxX, box.minY, box.maxY, box.maxZ, getATexture(blockState, Direction.SOUTH, world),color)
+        RenderBlock.renderSideSouth(mm, box.minX, box.maxX, box.minY, box.maxY, box.minZ, getTexture(blockState, Direction.SOUTH, world),color)
+        RenderBlock.renderSideSouth(mm, box.minX, box.maxX, box.minY, box.maxY, box.maxZ, getTexture(blockState, Direction.SOUTH, world),color)
 
 
-        RenderBlock.renderSideDown(mm, box.minX, box.maxX, box.maxY, box.minZ, box.maxZ, getATexture(blockState, Direction.DOWN, world),color)
-        RenderBlock.renderSideDown(mm, box.minX, box.maxX, box.minY, box.minZ, box.maxZ, getATexture(blockState, Direction.DOWN, world),color)
+        RenderBlock.renderSideDown(mm, box.minX, box.maxX, box.maxY, box.minZ, box.maxZ, getTexture(blockState, Direction.DOWN, world),color)
+        RenderBlock.renderSideDown(mm, box.minX, box.maxX, box.minY, box.minZ, box.maxZ, getTexture(blockState, Direction.DOWN, world),color)
 
 
-        RenderBlock.renderSideUp(mm, box.minX, box.maxX, box.minY, box.minZ, box.maxZ, getATexture(blockState, Direction.UP, world),color)
-        RenderBlock.renderSideUp(mm, box.minX, box.maxX, box.maxY, box.minZ, box.maxZ, getATexture(blockState, Direction.UP, world),color)
+        RenderBlock.renderSideUp(mm, box.minX, box.maxX, box.minY, box.minZ, box.maxZ, getTexture(blockState, Direction.UP, world),color)
+        RenderBlock.renderSideUp(mm, box.minX, box.maxX, box.maxY, box.minZ, box.maxZ, getTexture(blockState, Direction.UP, world),color)
 
     }
 }

@@ -111,13 +111,16 @@ class RenderItemStandart(val item: Item) extends TRenderItem {
         mm.addVertexWithUV(minX, maxY, zZero, minU, minV)
         mm.addVertexWithUV(maxX, maxY, zZero, maxU, minV)
         mm.addVertexWithUV(maxX, minY, zZero, maxU, maxV)
-        mm.addIndex(0, 2, 1)
-        mm.addIndex(0, 3, 2)
+        mm.addIndex(0, 1, 2)
+        mm.addIndex(0, 2, 3)
 
         mm.make()
     }
 
-    override def getInventoryModel: Model = new Model(inventoryMesh)
+    override def getInventoryModel: Model = new Model(inventoryMesh){
+        posX = 4
+        posY = 4
+    }
 
 
 }

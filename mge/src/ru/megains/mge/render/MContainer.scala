@@ -10,7 +10,7 @@ class MContainer extends MObject {
     val _children:ArrayBuffer[MObject] = ArrayBuffer[MObject]()
 
     override def render(shader: Shader): Unit = {
-        _children.foreach(_.render(shader))
+        _children.sortWith((a, b) => a.posZ < b.posZ).foreach(_.render(shader))
 
     }
 

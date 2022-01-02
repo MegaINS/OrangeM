@@ -18,27 +18,27 @@ class RenderBlockGlass(name:String) extends RenderBlockStandard(name) {
         val box = blockState.getBoundingBox.head.sum(xRIn, yRIn, zRIn)
 
         if (!world.getBlock(blockState.x - 1, blockState.y, blockState.z).block.isInstanceOf[BlockGlass]) {
-            RenderBlock.renderSideWest(mm, box.minX, box.minY, box.maxY, box.minZ, box.maxZ, getATexture(blockState, Direction.WEST, world))
+            RenderBlock.renderSideWest(mm, box.minX, box.minY, box.maxY, box.minZ, box.maxZ, getTexture(blockState, Direction.WEST, world))
         }
 
         if (!world.getBlock(blockState.x + 1, blockState.y, blockState.z).block.isInstanceOf[BlockGlass]) {
-            RenderBlock.renderSideEast(mm, box.maxX, box.minY, box.maxY, box.minZ, box.maxZ, getATexture(blockState, Direction.EAST, world))
+            RenderBlock.renderSideEast(mm, box.maxX, box.minY, box.maxY, box.minZ, box.maxZ, getTexture(blockState, Direction.EAST, world))
         }
 
         if (!world.getBlock(blockState.x, blockState.y, blockState.z - 1).block.isInstanceOf[BlockGlass]) {
-            RenderBlock.renderSideNorth(mm, box.minX, box.maxX, box.minY, box.maxY, box.minZ, getATexture(blockState, Direction.NORTH, world))
+            RenderBlock.renderSideNorth(mm, box.minX, box.maxX, box.minY, box.maxY, box.minZ, getTexture(blockState, Direction.NORTH, world))
         }
 
         if (!world.getBlock(blockState.x, blockState.y, blockState.z + 1).block.isInstanceOf[BlockGlass]) {
-            RenderBlock.renderSideSouth(mm, box.minX, box.maxX, box.minY, box.maxY, box.maxZ, getATexture(blockState, Direction.SOUTH, world))
+            RenderBlock.renderSideSouth(mm, box.minX, box.maxX, box.minY, box.maxY, box.maxZ, getTexture(blockState, Direction.SOUTH, world))
         }
 
         if (!world.getBlock(blockState.x, blockState.y - 1, blockState.z).block.isInstanceOf[BlockGlass]) {
-            RenderBlock.renderSideDown(mm, box.minX, box.maxX, box.minY, box.minZ, box.maxZ, getATexture(blockState, Direction.DOWN, world))
+            RenderBlock.renderSideDown(mm, box.minX, box.maxX, box.minY, box.minZ, box.maxZ, getTexture(blockState, Direction.DOWN, world))
         }
 
         if (!world.getBlock(blockState.x, blockState.y + 1, blockState.z).block.isInstanceOf[BlockGlass]) {
-            RenderBlock.renderSideUp(mm, box.minX, box.maxX, box.maxY, box.minZ, box.maxZ, getATexture(blockState, Direction.UP, world))
+            RenderBlock.renderSideUp(mm, box.minX, box.maxX, box.maxY, box.minZ, box.maxZ, getTexture(blockState, Direction.UP, world))
         }
     }
 

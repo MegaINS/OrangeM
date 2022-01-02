@@ -34,7 +34,7 @@ class RendererGui(gameScene: SceneGame) {
         addGuiUI("guiBlockSelect", new GuiBlockSelect())
         addGuiUI("guiHotBar", new GuiHotBar())
         addGuiUI("guiTarget", new GuiTarget())
-        guiPlayerInventory.init(gameScene.game)
+        //guiPlayerInventory.init(gameScene.game)
     }
 
     def update(): Unit = {
@@ -89,6 +89,7 @@ class RendererGui(gameScene: SceneGame) {
     }
 
     def openGui(guiGame: GuiScreen): Unit = {
+
         guiGame.init(gameScene.game)
         guiGame.resize(Window.width,Window.height)
         openGui = guiGame
@@ -98,6 +99,7 @@ class RendererGui(gameScene: SceneGame) {
 
     def openPlayerInventory(): Unit = {
         openGui(guiPlayerInventory)
+        println("10000")
     }
 
     def addGuiUI(name: String, guiUI: GuiUI): Unit = {

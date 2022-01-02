@@ -10,6 +10,7 @@ import ru.megains.orangem.common.world.World
 class RendererMiniBlock(name: String) extends TRenderBlock {
         var texture: TTexture = _
 
+
         override def registerTexture(textureRegister: TTextureRegister): Unit = {
             texture = textureRegister.registerTexture(name)
         }
@@ -22,31 +23,31 @@ class RendererMiniBlock(name: String) extends TRenderBlock {
 
 
            // if (!world.getCell(blockState.x - 16, blockState.y, blockState.z).isOpaqueCube) {
-                RenderBlock.renderSideWest(mm,box.minX, box.minY, box.maxY, box.minZ, box.maxZ, getATexture(blockStateIn,Direction.WEST,world))
+                RenderBlock.renderSideWest(mm,box.minX, box.minY, box.maxY, box.minZ, box.maxZ, getTexture(blockStateIn,Direction.WEST,world))
            // }
 
            // if (!world.getCell(blockState.x + 16, blockState.y, blockState.z).isOpaqueCube) {
-                RenderBlock.renderSideEast(mm,box.maxX, box.minY, box.maxY, box.minZ, box.maxZ, getATexture(blockStateIn,Direction.EAST,world))
+                RenderBlock.renderSideEast(mm,box.maxX, box.minY, box.maxY, box.minZ, box.maxZ, getTexture(blockStateIn,Direction.EAST,world))
            // }
 
            // if (!world.getCell(blockState.x, blockState.y, blockState.z - 16).isOpaqueCube) {
-                RenderBlock.renderSideNorth(mm,box.minX, box.maxX, box.minY, box.maxY, box.minZ, getATexture(blockStateIn,Direction.NORTH,world))
+                RenderBlock.renderSideNorth(mm,box.minX, box.maxX, box.minY, box.maxY, box.minZ, getTexture(blockStateIn,Direction.NORTH,world))
            // }
 
            // if (!world.getCell(blockState.x, blockState.y, blockState.z + 16).isOpaqueCube) {
-                RenderBlock.renderSideSouth(mm,box.minX, box.maxX, box.minY, box.maxY, box.maxZ, getATexture(blockStateIn,Direction.SOUTH,world))
+                RenderBlock.renderSideSouth(mm,box.minX, box.maxX, box.minY, box.maxY, box.maxZ, getTexture(blockStateIn,Direction.SOUTH,world))
            // }
 
            // if (!world.getCell(blockState.x, blockState.y - 16, blockState.z).isOpaqueCube) {
-                RenderBlock.renderSideDown(mm,box.minX, box.maxX, box.minY, box.minZ, box.maxZ, getATexture(blockStateIn,Direction.DOWN,world))
+                RenderBlock.renderSideDown(mm,box.minX, box.maxX, box.minY, box.minZ, box.maxZ, getTexture(blockStateIn,Direction.DOWN,world))
            // }
 
            // if (!world.getCell(blockState.x, blockState.y + 16, blockState.z).isOpaqueCube) {
-                RenderBlock.renderSideUp(mm,box.minX, box.maxX, box.maxY, box.minZ, box.maxZ, getATexture(blockStateIn,Direction.UP,world))
+                RenderBlock.renderSideUp(mm,box.minX, box.maxX, box.maxY, box.minZ, box.maxZ, getTexture(blockStateIn,Direction.UP,world))
            // }
         }
 
-        override def getATexture: TTexture = texture
+        override def getTexture(direction: Direction): TTexture = texture
 
-        override def getATexture(blockState: BlockState, direction: Direction, world: World): TTexture = texture
+        override def getTexture(blockState: BlockState, direction: Direction, world: World): TTexture = texture
 }

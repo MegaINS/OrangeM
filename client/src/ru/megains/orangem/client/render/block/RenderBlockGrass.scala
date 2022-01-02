@@ -19,14 +19,15 @@ class RenderBlockGrass(name: String) extends RenderBlockStandard(name) {
         aTextureDown = textureRegister.registerTexture(name + "_down")
     }
 
-    override def getATexture(blockState: BlockState,direction: Direction,world: World): TTexture = {
+    override def getTexture(blockState: BlockState, direction: Direction, world: World): TTexture = {
+        getTexture(direction)
+    }
+
+    override def getTexture(direction: Direction): TTexture = {
         direction match {
             case Direction.UP => aTextureUp
             case Direction.DOWN => aTextureDown
             case _ => texture
         }
-
     }
-
-
 }

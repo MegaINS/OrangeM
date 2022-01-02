@@ -9,9 +9,9 @@ import ru.megains.orangem.common.world.World
 
 trait TRenderBlock extends TRenderTexture{
 
-    def getATexture: TTexture
-
     def render(mm: MeshMaker, blockState: BlockState, world: World, xRIn: Float, yRIn: Float, zRIn: Float): Unit
 
-    def getATexture(blockState: BlockState, direction: Direction, world: World): TTexture
+    def getTexture(direction: Direction): TTexture
+
+    def getTexture(blockState: BlockState, direction: Direction, world: World): TTexture
 }

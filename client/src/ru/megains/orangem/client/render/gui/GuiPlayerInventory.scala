@@ -5,16 +5,18 @@ import ru.megains.mge.Window
 import ru.megains.mge.render.MSprite
 import ru.megains.mge.render.texture.Texture
 import ru.megains.orangem.client.OrangeM
+import ru.megains.orangem.client.render.Resources
 import ru.megains.orangem.client.scene.SceneGame
 import ru.megains.orangem.common.entity.player.EntityPlayer
 
 class GuiPlayerInventory(entityPlayer: EntityPlayer,gameScene: SceneGame) extends GuiContainer(entityPlayer.inventoryContainer,gameScene: SceneGame) {
 
-    val playerInventory = new MSprite(new Texture("textures/gui/playerInventory.png"), 500, 240)
+    val playerInventory = new MSprite(Resources.PLAYER_INVENTORY, 500, 240)
 
-    override def init(gameIn: OrangeM): Unit = {
-        super.init(gameIn)
+    override def init(): Unit = {
         addChildren(playerInventory)
+        super.init()
+
     }
 
     override def resize(width:Int,height:Int): Unit = {

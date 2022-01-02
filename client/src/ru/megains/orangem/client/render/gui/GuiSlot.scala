@@ -1,6 +1,7 @@
 package ru.megains.orangem.client.render.gui
 
 import ru.megains.mge.render.MContainer
+import ru.megains.mge.render.shader.Shader
 import ru.megains.orangem.client.render.gui.item.GuiItemStack
 import ru.megains.orangem.common.inventory.Slot
 import ru.megains.orangem.common.item.itemstack.ItemStack
@@ -12,7 +13,8 @@ class GuiSlot(slot:Slot) extends MContainer {
     var stack:ItemStack = _
     posX = slot.xPos
     posY = slot.yPos
-    override def update(): Unit = {
+
+    override def render(shader: Shader): Unit = {
         if (stack != slot.getStack) {
             removeChildren(itemStackRender)
             val slotStack = slot.getStack
@@ -26,5 +28,7 @@ class GuiSlot(slot:Slot) extends MContainer {
                     addChildren(itemStackRender)
             }
         }
+
+        super.render(shader)
     }
 }
