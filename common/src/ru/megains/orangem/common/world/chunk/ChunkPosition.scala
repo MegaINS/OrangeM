@@ -1,9 +1,9 @@
 package ru.megains.orangem.common.world.chunk
 
-case class ChunkPosition(posX:Int,posY:Int,posZ:Int) {
+case class ChunkPosition(x:Int, y:Int, z:Int) {
 
-    def blockPosX: Int = posX * Chunk.blockSize
-    def blockPosY: Int = posY * Chunk.blockSize
-    def blockPosZ: Int = posZ * Chunk.blockSize
+    def blockX: Int = x * Chunk.blockSize
+    def blockY: Int = y * Chunk.blockSize
+    def blockZ: Int = z * Chunk.blockSize
 
 }

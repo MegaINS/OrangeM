@@ -30,10 +30,10 @@ class ChunkLoader(worldDirectory: Directory) {
 
             writeChunk(chunkNBT, chunk)
             val pos = chunk.pos
-            val output = regionLoader.getChunkOutputStream(pos.posX, pos.posY, pos.posZ)
+            val output = regionLoader.getChunkOutputStream(pos.x, pos.y, pos.z)
             NBTData.writeToStream(chunkNBT, output)
             output.close()
-            println(chunk.pos.posX +" " +chunk.pos.posY +" "+chunk.pos.posZ)
+            println(chunk.pos.x +" " +chunk.pos.y +" "+chunk.pos.z)
         }
     }
 

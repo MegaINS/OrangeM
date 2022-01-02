@@ -28,9 +28,9 @@ class ChunkBoundsRenderer(gameScene: SceneGame) {
             val posZ: Int = (player.posZ / Chunk.blockSize - (if (player.posZ < 0) 1 else 0)).toInt
             val chunk = world.getChunk(posX,posY, posZ)
 
-            chunkMesh.posX = chunk.pos.blockPosX
-            chunkMesh.posY = chunk.pos.blockPosY
-            chunkMesh.posZ = chunk.pos.blockPosZ
+            chunkMesh.posX = chunk.pos.blockX
+            chunkMesh.posY = chunk.pos.blockY
+            chunkMesh.posZ = chunk.pos.blockZ
 
 
 

@@ -16,6 +16,14 @@ abstract class Entity(val height: Float,val wight: Float,val levelView: Float) {
     var rotYaw:Float = 0
     var rotPitch:Float = 0
 
+
+    var prevPosX:Float = 0
+    var prevPosY:Float = 0
+    var prevPosZ:Float = 0
+    var prevRotYaw:Float = 0
+    var prevRotPitch:Float = 0
+
+
     var moveStrafing = .0f
     var moveForward = .0f
     var isJumping = false
@@ -44,6 +52,31 @@ abstract class Entity(val height: Float,val wight: Float,val levelView: Float) {
         posZ = z
         val i = wight/2
         body.set(x-i, y, z-i, x+i,y+ height, z+i)
+    }
+
+
+    def setPositionAndRotation(x: Float, y: Float, z: Float, yaw: Float, pitch: Float): Unit = {
+        posX = x//MathHelper.clamp_double(x, -3.0E7f, 3.0E7f)
+        posY = y
+        posZ = z//MathHelper.clamp_double(z, -3.0E7f, 3.0E7f)
+        prevPosX = posX
+        prevPosY = posY
+        prevPosZ = posZ
+       // val pitch = MathHelper.clamp_float(pitchIn, -90.0F, 90.0F)
+        rotYaw = yaw
+        rotPitch = pitch
+        prevRotYaw = rotYaw
+        prevRotPitch = rotPitch
+        val d0: Double = (prevRotYaw - yaw).toDouble
+        if (d0 < -180.0D) prevRotYaw += 360.0F
+        if (d0 >= 180.0D) prevRotYaw -= 360.0F
+        setPosition(posX, posY, posZ)
+        setRotation(yaw, pitch)
+    }
+
+    protected def setRotation(yaw: Float, pitch: Float): Unit = {
+        rotYaw = yaw % 360.0F
+        rotPitch = pitch % 360.0F
     }
 
     def update(): Unit ={

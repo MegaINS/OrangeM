@@ -1,6 +1,7 @@
 package ru.megains.orangem.common.network.packet.play.server
 
 import ru.megains.orangem.common.item.ItemPack
+import ru.megains.orangem.common.item.itemstack.ItemStack
 import ru.megains.orangem.common.network.handler.INetHandlerPlayClient
 import ru.megains.orangem.common.network.packet.{Packet, PacketBuffer}
 
@@ -9,10 +10,10 @@ class SPacketSetSlot extends Packet[INetHandlerPlayClient] {
 
     var windowId: Int = 0
     var slot: Int = 0
-    var item: ItemPack = _
+    var item: ItemStack = _
 
 
-    def this(windowIdIn: Int, slotIn: Int, itemIn: ItemPack) ={
+    def this(windowIdIn: Int, slotIn: Int, itemIn: ItemStack) ={
         this()
         windowId = windowIdIn
         slot = slotIn

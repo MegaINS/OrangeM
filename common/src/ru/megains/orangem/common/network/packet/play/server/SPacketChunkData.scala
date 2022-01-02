@@ -31,9 +31,9 @@ class SPacketChunkData extends Packet[INetHandlerPlayClient] {
     }
 
     override def writePacketData(buf: PacketBuffer): Unit = {
-        buf.writeInt(position.posX)
-        buf.writeInt(position.posY)
-        buf.writeInt(position.posZ)
+        buf.writeInt(position.x)
+        buf.writeInt(position.y)
+        buf.writeInt(position.z)
         buf.writeBoolean(chunkVoid)
         if (!chunkVoid) writeChunk(buf)
     }

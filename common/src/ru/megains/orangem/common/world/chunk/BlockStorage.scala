@@ -17,12 +17,12 @@ class BlockStorage(pos: ChunkPosition) extends Logger[BlockStorage] {
 
     def isAirBlock(blockStateIn: BlockState): Boolean = {
 
-        val minX: Int = Math.max(blockStateIn.x + blockStateIn.getSelectedBlockSize.minX / Chunk.blockSize - pos.blockPosX, 0)
-        val minY: Int = Math.max(blockStateIn.y + blockStateIn.getSelectedBlockSize.minY / Chunk.blockSize - pos.blockPosY, 0)
-        val minZ: Int = Math.max(blockStateIn.z + blockStateIn.getSelectedBlockSize.minZ / Chunk.blockSize - pos.blockPosZ, 0)
-        val maxX: Int = Math.min(blockStateIn.x + (blockStateIn.getSelectedBlockSize.maxX - 1) / Chunk.blockSize - pos.blockPosX, Chunk.blockSize-1)
-        val maxY: Int = Math.min(blockStateIn.y + (blockStateIn.getSelectedBlockSize.maxY - 1) / Chunk.blockSize - pos.blockPosY, Chunk.blockSize-1)
-        val maxZ: Int = Math.min(blockStateIn.z + (blockStateIn.getSelectedBlockSize.maxZ - 1) / Chunk.blockSize - pos.blockPosZ, Chunk.blockSize-1)
+        val minX: Int = Math.max(blockStateIn.x + blockStateIn.getSelectedBlockSize.minX / Chunk.blockSize - pos.blockX, 0)
+        val minY: Int = Math.max(blockStateIn.y + blockStateIn.getSelectedBlockSize.minY / Chunk.blockSize - pos.blockY, 0)
+        val minZ: Int = Math.max(blockStateIn.z + blockStateIn.getSelectedBlockSize.minZ / Chunk.blockSize - pos.blockZ, 0)
+        val maxX: Int = Math.min(blockStateIn.x + (blockStateIn.getSelectedBlockSize.maxX - 1) / Chunk.blockSize - pos.blockX, Chunk.blockSize-1)
+        val maxY: Int = Math.min(blockStateIn.y + (blockStateIn.getSelectedBlockSize.maxY - 1) / Chunk.blockSize - pos.blockY, Chunk.blockSize-1)
+        val maxZ: Int = Math.min(blockStateIn.z + (blockStateIn.getSelectedBlockSize.maxZ - 1) / Chunk.blockSize - pos.blockZ, Chunk.blockSize-1)
 
         for (blockX <- minX to maxX;
              blockY <- minY to maxY;
@@ -43,7 +43,7 @@ class BlockStorage(pos: ChunkPosition) extends Logger[BlockStorage] {
         blockId(index) match {
             case AIR => new BlockState(BlockAir, x, y, z)
             case CELL => cellId(index)
-            case _ => new BlockState(GameRegister.getBlockById(blockId(index)), pos.blockPosX + x, pos.blockPosY + y, pos.blockPosZ + z)
+            case _ => new BlockState(GameRegister.getBlockById(blockId(index)), pos.blockX + x, pos.blockY + y, pos.blockZ + z)
         }
 
 
@@ -58,12 +58,12 @@ class BlockStorage(pos: ChunkPosition) extends Logger[BlockStorage] {
 
     def setBlock(blockStateIn: BlockState): Unit = {
 
-        val minX: Int = Math.max(blockStateIn.x + blockStateIn.getSelectedBlockSize.minX / Chunk.blockSize - pos.blockPosX, 0)
-        val minY: Int = Math.max(blockStateIn.y + blockStateIn.getSelectedBlockSize.minY / Chunk.blockSize - pos.blockPosY, 0)
-        val minZ: Int = Math.max(blockStateIn.z + blockStateIn.getSelectedBlockSize.minZ / Chunk.blockSize - pos.blockPosZ, 0)
-        val maxX: Int = Math.min(blockStateIn.x + (blockStateIn.getSelectedBlockSize.maxX - 1) / Chunk.blockSize - pos.blockPosX, Chunk.blockSize-1)
-        val maxY: Int = Math.min(blockStateIn.y + (blockStateIn.getSelectedBlockSize.maxY - 1) / Chunk.blockSize - pos.blockPosY, Chunk.blockSize-1)
-        val maxZ: Int = Math.min(blockStateIn.z + (blockStateIn.getSelectedBlockSize.maxZ - 1) / Chunk.blockSize - pos.blockPosZ, Chunk.blockSize-1)
+        val minX: Int = Math.max(blockStateIn.x + blockStateIn.getSelectedBlockSize.minX / Chunk.blockSize - pos.blockX, 0)
+        val minY: Int = Math.max(blockStateIn.y + blockStateIn.getSelectedBlockSize.minY / Chunk.blockSize - pos.blockY, 0)
+        val minZ: Int = Math.max(blockStateIn.z + blockStateIn.getSelectedBlockSize.minZ / Chunk.blockSize - pos.blockZ, 0)
+        val maxX: Int = Math.min(blockStateIn.x + (blockStateIn.getSelectedBlockSize.maxX - 1) / Chunk.blockSize - pos.blockX, Chunk.blockSize-1)
+        val maxY: Int = Math.min(blockStateIn.y + (blockStateIn.getSelectedBlockSize.maxY - 1) / Chunk.blockSize - pos.blockY, Chunk.blockSize-1)
+        val maxZ: Int = Math.min(blockStateIn.z + (blockStateIn.getSelectedBlockSize.maxZ - 1) / Chunk.blockSize - pos.blockZ, Chunk.blockSize-1)
 
         for (blockX <- minX to maxX;
              blockY <- minY to maxY;
@@ -76,7 +76,7 @@ class BlockStorage(pos: ChunkPosition) extends Logger[BlockStorage] {
                         case BlockAir =>
 
                         case _: MiniBlock =>
-                            val cellNew: BlockState = new BlockState(new BlockCell(pos.blockPosX + blockX, pos.blockPosY + blockY, pos.blockPosZ + blockZ), pos.blockPosX + blockX, pos.blockPosY + blockY, pos.blockPosZ + blockZ)
+                            val cellNew: BlockState = new BlockState(new BlockCell(pos.blockX + blockX, pos.blockY + blockY, pos.blockZ + blockZ), pos.blockX + blockX, pos.blockY + blockY, pos.blockZ + blockZ)
                             cellNew.setBlock(blockStateIn)
                             cellId(index) = cellNew
                             blockId(index) = -1
@@ -98,12 +98,12 @@ class BlockStorage(pos: ChunkPosition) extends Logger[BlockStorage] {
 
     def removeBlock(blockStateIn: BlockState): Unit = {
 
-        val minX: Int = Math.max(blockStateIn.x + blockStateIn.getSelectedBlockSize.minX / Chunk.blockSize - pos.blockPosX, 0)
-        val minY: Int = Math.max(blockStateIn.y + blockStateIn.getSelectedBlockSize.minY / Chunk.blockSize - pos.blockPosY, 0)
-        val minZ: Int = Math.max(blockStateIn.z + blockStateIn.getSelectedBlockSize.minZ / Chunk.blockSize - pos.blockPosZ, 0)
-        val maxX: Int = Math.min(blockStateIn.x + (blockStateIn.getSelectedBlockSize.maxX - 1) / Chunk.blockSize - pos.blockPosX, Chunk.blockSize-1)
-        val maxY: Int = Math.min(blockStateIn.y + (blockStateIn.getSelectedBlockSize.maxY - 1) / Chunk.blockSize - pos.blockPosY, Chunk.blockSize-1)
-        val maxZ: Int = Math.min(blockStateIn.z + (blockStateIn.getSelectedBlockSize.maxZ - 1) / Chunk.blockSize - pos.blockPosZ, Chunk.blockSize-1)
+        val minX: Int = Math.max(blockStateIn.x + blockStateIn.getSelectedBlockSize.minX / Chunk.blockSize - pos.blockX, 0)
+        val minY: Int = Math.max(blockStateIn.y + blockStateIn.getSelectedBlockSize.minY / Chunk.blockSize - pos.blockY, 0)
+        val minZ: Int = Math.max(blockStateIn.z + blockStateIn.getSelectedBlockSize.minZ / Chunk.blockSize - pos.blockZ, 0)
+        val maxX: Int = Math.min(blockStateIn.x + (blockStateIn.getSelectedBlockSize.maxX - 1) / Chunk.blockSize - pos.blockX, Chunk.blockSize-1)
+        val maxY: Int = Math.min(blockStateIn.y + (blockStateIn.getSelectedBlockSize.maxY - 1) / Chunk.blockSize - pos.blockY, Chunk.blockSize-1)
+        val maxZ: Int = Math.min(blockStateIn.z + (blockStateIn.getSelectedBlockSize.maxZ - 1) / Chunk.blockSize - pos.blockZ, Chunk.blockSize-1)
 
         for (blockX <- minX to maxX;
              blockY <- minY to maxY;

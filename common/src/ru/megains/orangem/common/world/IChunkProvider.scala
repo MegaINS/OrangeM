@@ -7,7 +7,7 @@ abstract class IChunkProvider {
 
 
     def loadChunk(pos: ChunkPosition): Chunk = {
-        loadChunk(pos.posX, pos.posY, pos.posZ)
+        loadChunk(pos.x, pos.y, pos.z)
     }
 
     def loadChunk(chunkX: Int, chunkY: Int, chunkZ: Int): Chunk

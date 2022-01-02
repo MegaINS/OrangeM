@@ -17,6 +17,8 @@ class Chunk(val pos: ChunkPosition, val world: World) extends Logger[Chunk]{
 
     var isEmpty: Boolean = true
 
+    var isPopulated: Boolean = true
+
     def getBlock(x: Int, y: Int, z: Int):BlockState = {
         blockStorage.getBlock(x & (Chunk.blockSize-1), y & (Chunk.blockSize-1), z & (Chunk.blockSize-1))
     }
@@ -37,15 +39,15 @@ class Chunk(val pos: ChunkPosition, val world: World) extends Logger[Chunk]{
 
     def addEntity(entityIn: Entity): Unit = {
         chunkEntityMap += entityIn
-        entityIn.chunkCoordX = pos.posX
-        entityIn.chunkCoordY = pos.posY
-        entityIn.chunkCoordZ = pos.posZ
+        entityIn.chunkCoordX = pos.x
+        entityIn.chunkCoordY = pos.y
+        entityIn.chunkCoordZ = pos.z
         world.addEntity(entityIn)
         entityIn.world = world
     }
 
 
-    override def toString: String = s"Chunk x=${pos.posX},y=${pos.posY},z=${pos.posZ}"
+    override def toString: String = s"Chunk x=${pos.x},y=${pos.y},z=${pos.z}"
 
 }
 

@@ -13,7 +13,7 @@ import ru.megains.orangem.common.world.data.AnvilSaveHandler
 import scala.collection.mutable
 import scala.util.Random
 
-class World(saveHandler: AnvilSaveHandler) extends Logger[World] {
+class World(val saveHandler: AnvilSaveHandler) extends Logger[World] {
 
 
     val height: Int = 10000
